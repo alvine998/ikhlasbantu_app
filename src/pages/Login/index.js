@@ -6,7 +6,7 @@ import { logo } from '../../assets';
 const Login = (props) => {
     return (
         <View>
-            <StatusBar animated backgroundColor={"#44981C"} />
+            <StatusBar animated backgroundColor={"#9724DE"} />
             <View style={styles.background}>
                 <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
                     <Image source={logo} style={styles.imgSize} />
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     },
     background: {
         height: "100%",
-        backgroundColor: "#44981C"
+        backgroundColor: "#9724DE"
     },
     tube: {
         width: normalize(280),
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     text2: {
         fontSize: normalize(16),
         fontFamily: "Quicksand-Bold",
-        color: "black",
+        color: "white",
     },
     text3: {
         fontSize: normalize(18),

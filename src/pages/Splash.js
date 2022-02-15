@@ -7,13 +7,13 @@ import { logo } from '../assets';
 const Splash = (props) => {
     useEffect(() => {
         setTimeout(() => {
-            props.navigation.dispatch(StackActions.replace("login"))
-        }, 1000)
+            props.navigation.dispatch(StackActions.replace("intro"))
+        }, 1500)
     })
     return (
         <View>
             <View style={styles.background}>
-                <StatusBar animated backgroundColor={"#44981C"} />
+                <StatusBar animated backgroundColor={"#9724DE"} />
                 <View style={styles.objCenter}>
                     <Image source={logo} style={styles.imgSize} />
                 </View>
@@ -27,7 +27,7 @@ export default Splash;
 const styles = StyleSheet.create({
     background: {
         height: '100%',
-        backgroundColor: "#44981C"
+        backgroundColor: "#9724DE"
     },
     imgSize: {
         width: normalize(250),
