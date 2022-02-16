@@ -7,6 +7,7 @@ import BottomTabs from './src/components/BottomTabs';
 import Home from './src/pages/Home';
 import Intro from './src/pages/Intro';
 import Login from './src/pages/Login';
+import Profil from './src/pages/Profil';
 import Register from './src/pages/Register';
 import Splash from './src/pages/Splash';
 
@@ -21,6 +22,7 @@ const App = (props) => {
         <Stack.Screen name='login' component={Login}/>
         <Stack.Screen name='register' component={Register}/>
         <Stack.Screen name='home' component={BottomTabs}/>
+        <Stack.Screen name='profil' component={Profil}/>
       </Stack.Navigator>
     </NavigationContainer>
     // <View>

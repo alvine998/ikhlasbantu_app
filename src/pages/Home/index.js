@@ -1,14 +1,30 @@
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { Image, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { SliderBox } from 'react-native-image-slider-box';
 import normalize from 'react-native-normalize';
-import { bencana, kesehatan, logo, sedekah } from '../../assets';
+import { bencana, jumatsedekah, kesehatan, logo, sedekah } from '../../assets';
 
 const Home = (props) => {
 
     const [active, setActive] = useState(0);
     const [wdth, setWdth] = useState(0);
+    const [collect, setCollect] = useState([]);
+
+    // const getdata = () => {
+    //     axios.get(`http://192.168.18.7:4000/banners`).then(
+    //         res => {
+    //             console.log(res.data);
+    //             const collect = res.data;
+    //             setCollect(collect);
+    //         }
+    //     )
+    // }
+
+    // useEffect(()=>{
+    //     getdata();
+    // },[])
 
     const carouselItems = [
         "http://semestabertasbihgroup.com/wp-content/uploads/2021/06/8-1024x576.png",
@@ -22,7 +38,7 @@ const Home = (props) => {
 
     return (
         <View>
-            <StatusBar animated backgroundColor={"#9724DE"} barStyle={'dark-content'} />
+            <StatusBar animated backgroundColor={"#9724DE"} barStyle={'light-content'} />
             <View style={styles.background}>
                 <View style={styles.header}>
                     <Image source={logo} style={styles.imgSize} />
@@ -55,23 +71,28 @@ const Home = (props) => {
 
                     <View style={styles.lining} />
                     <View style={styles.container1}>
-                        <Text style={styles.text1}>Pilhan Kategori Donasi</Text>
+                        <Text style={styles.text1}>Pilihan Kategori Donasi</Text>
                         <View style={styles.rowing}>
                             <TouchableOpacity>
                                 <Image source={kesehatan} style={styles.imgSize2} />
                                 <Text style={styles.text4}>Kesehatan</Text>
                             </TouchableOpacity>
-                            <View style={{paddingLeft:normalize(20)}} />
+                            <View style={{ paddingLeft: normalize(40) }} />
                             <TouchableOpacity>
                                 <Image source={bencana} style={styles.imgSize2} />
                                 <Text style={styles.text4}>Bencana</Text>
                             </TouchableOpacity>
-                            <View style={{paddingLeft:normalize(20)}} />
+                            <View style={{ paddingLeft: normalize(40) }} />
                             <TouchableOpacity>
                                 <Image source={sedekah} style={styles.imgSize2} />
                                 <Text style={styles.text4}>Sedekah</Text>
                             </TouchableOpacity>
                         </View>
+                    </View>
+
+                    <View style={styles.lining} />
+                    <View style={styles.container1}>
+                        <Image source={jumatsedekah} style={styles.imgSize3} />
                     </View>
 
                     <View style={styles.lining} />
@@ -162,4 +183,8 @@ const styles = StyleSheet.create({
         fontSize: normalize(16),
         fontFamily: "Quicksand-Regular"
     },
+    imgSize3: {
+        height: normalize(200),
+        width:'100%'
+    }
 });
