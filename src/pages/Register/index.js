@@ -48,6 +48,7 @@ const Register = (props) => {
                     </View>
                 </View>
             </View>
+            
         </View>
     );
 }

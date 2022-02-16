@@ -13,9 +13,10 @@
 // export default Intro;
 
 import React, { useState } from 'react';
-import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ImageBackground, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import normalize from 'react-native-normalize';
+import App from '../../../App';
 import { logo } from '../../assets';
 
 const Intro = (props) => {
@@ -41,15 +42,19 @@ const Intro = (props) => {
 
     const renderItem = ({ item }) => {
         return (
-            <View style={item.key == 1 ? styles.background : { backgroundColor: "#fff", height: "100%" }}>
-                {/* <Text style>{item.title}</Text> */}
-                <View style={{ justifyContent: "center", alignItems: "center", paddingTop: normalize(130) }}>
-                    <Image source={item.image} style={styles.imgSize} />
-                </View>
-                <View style={item.key == 1 ? {paddingLeft:normalize(50), paddingRight:normalize(50), paddingTop:normalize(50)} : {paddingLeft:normalize(40), paddingRight:normalize(40), paddingTop:normalize(50)}}>
-                    <Text style={ item.key == 1 ? styles.text1 : styles.text2}>{item.text}</Text>
+            <View>
+                <StatusBar animated backgroundColor={item.key == 1 ? "#9724DE" : "#fff"} />
+                <View style={item.key == 1 ? styles.background : { backgroundColor: "#fff", height: "100%" }}>
+                    {/* <Text style>{item.title}</Text> */}
+                    <View style={{ justifyContent: "center", alignItems: "center", paddingTop: normalize(130) }}>
+                        <Image source={item.image} style={styles.imgSize} />
+                    </View>
+                    <View style={item.key == 1 ? { paddingLeft: normalize(50), paddingRight: normalize(50), paddingTop: normalize(50) } : { paddingLeft: normalize(40), paddingRight: normalize(40), paddingTop: normalize(50) }}>
+                        <Text style={item.key == 1 ? styles.text1 : styles.text2}>{item.text}</Text>
+                    </View>
                 </View>
             </View>
+
         );
     }
 
@@ -59,11 +64,14 @@ const Intro = (props) => {
                 <Text style={{ color: "black", fontSize: normalize(20) }}>Done</Text>
             </View>
         )
+
     }
+
 
     return (
         <AppIntroSlider renderItem={renderItem} data={slides} onDone={() => props.navigation.navigate("login")} renderDoneButton={renderDone} />
     )
+
 }
 
 export default Intro;
@@ -86,14 +94,14 @@ const styles = StyleSheet.create({
     text1: {
         fontSize: normalize(26),
         textAlign: "center",
-        fontFamily:"Quicksand-Bold",
-        color:"white"
+        fontFamily: "Quicksand-Bold",
+        color: "white"
     },
     text2: {
         fontSize: normalize(26),
         textAlign: "center",
-        fontFamily:"Quicksand-Bold",
-        color:"black"
+        fontFamily: "Quicksand-Bold",
+        color: "black"
     },
     dot1: {
         width: normalize(15),
