@@ -21,7 +21,7 @@ const Profil = (props) => {
                             <View style={styles.container2}>
                                 <Text style={styles.text2}>Agustian Adrian</Text>
                                 <Text style={styles.text2}>0 Poin</Text>
-                                <TouchableOpacity style={styles.btn1}>
+                                <TouchableOpacity style={styles.btn1} onPress={()=>props.navigation.navigate("akun")}>
                                     <Text style={styles.text3}>Ubah Profil</Text>
                                 </TouchableOpacity>
                             </View>
@@ -34,11 +34,27 @@ const Profil = (props) => {
                             <Icon type='font-awesome-5' name='history' size={normalize(30)} color={"#9724DE"} />
                             <Text style={styles.text4}>Riwayat Donasimu</Text>
                         </TouchableOpacity>
+
                         <View style={styles.lining2} />
                         <TouchableOpacity style={{flexDirection:"row"}}>
-                            <Icon type='font-awesome-5' name='history' size={normalize(30)} color={"#9724DE"} />
-                            <Text style={styles.text4}>Riwayat Donasimu</Text>
+                            <Icon type='font-awesome-5' name='envelope' size={normalize(30)} color={"#9724DE"} />
+                            <Text style={styles.text4}>Kotak Masuk</Text>
                         </TouchableOpacity>
+
+                        <View style={styles.lining2} />
+                        <TouchableOpacity style={{flexDirection:"row"}}>
+                            <Icon type='font-awesome-5' name='info-circle' size={normalize(30)} color={"#9724DE"} />
+                            <Text style={styles.text4}>Bantuan</Text>
+                        </TouchableOpacity>
+
+                        <View style={styles.lining2} />
+                        <TouchableOpacity style={{flexDirection:"row"}}>
+                            <Icon type='font-awesome' name='sign-out' size={normalize(30)} color={"#9724DE"} />
+                            <Text style={styles.text4}>Logout</Text>
+                        </TouchableOpacity>
+
+                        <View style={styles.lining2} />
+                        <Text style={{textAlign:"center"}}>Ikhlasbantu App Versi 1.0</Text>
                     </View>
                 </ScrollView>
             </View>
@@ -101,7 +117,8 @@ const styles = StyleSheet.create({
     lining2: {
         height: normalize(3),
         backgroundColor: "#dfdfdf",
-        marginTop: normalize(10)
+        marginTop: normalize(10),
+        marginBottom:normalize(20)
     },
     container: {
         padding: normalize(20)
