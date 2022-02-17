@@ -15,7 +15,7 @@ const Profil = (props) => {
                     <View style={styles.container}>
                         <View style={{ flexDirection: "row" }}>
                             <TouchableOpacity style={styles.imgContainer}>
-
+                                <Icon type='font-awesome' name='user' size={normalize(70)} color={"#808080"} />
                             </TouchableOpacity>
 
                             <View style={styles.container2}>
@@ -42,31 +42,31 @@ const Profil = (props) => {
                         </TouchableOpacity>
 
                         <View style={styles.lining2} />
-                        <TouchableOpacity style={{ flexDirection: "row" }}>
+                        <TouchableOpacity style={{ flexDirection: "row" }} onPress={()=>props.navigation.navigate("daftar-donasi")}>
                             <Icon type='font-awesome-5' name='book' size={normalize(30)} color={"#9724DE"} />
                             <Text style={styles.text4}>Daftar Donasimu</Text>
                         </TouchableOpacity>
 
                         <View style={styles.lining2} />
-                        <TouchableOpacity style={{ flexDirection: "row" }}>
+                        <TouchableOpacity style={{ flexDirection: "row" }} onPress={()=>props.navigation.navigate("riwayat-donasi")}>
                             <Icon type='font-awesome-5' name='history' size={normalize(30)} color={"#9724DE"} />
                             <Text style={styles.text4}>Riwayat Donasi</Text>
                         </TouchableOpacity>
 
                         <View style={styles.lining2} />
-                        <TouchableOpacity style={{ flexDirection: "row" }}>
+                        <TouchableOpacity style={{ flexDirection: "row" }} onPress={()=>props.navigation.navigate("kotak-masuk")}>
                             <Icon type='font-awesome-5' name='envelope' size={normalize(30)} color={"#9724DE"} />
                             <Text style={styles.text4}>Kotak Masuk</Text>
                         </TouchableOpacity>
 
                         <View style={styles.lining2} />
-                        <TouchableOpacity style={{ flexDirection: "row" }}>
+                        <TouchableOpacity style={{ flexDirection: "row" }} onPress={()=>props.navigation.navigate("bantuan")}>
                             <Icon type='font-awesome-5' name='info-circle' size={normalize(30)} color={"#9724DE"} />
                             <Text style={styles.text4}>Bantuan</Text>
                         </TouchableOpacity>
 
                         <View style={styles.lining2} />
-                        <TouchableOpacity style={{ flexDirection: "row" }} onPress={()=>props.navigation.navigate("login")}>
+                        <TouchableOpacity style={{ flexDirection: "row" }} onPress={() => props.navigation.navigate("login")}>
                             <Icon type='font-awesome' name='sign-out' size={normalize(30)} color={"#9724DE"} />
                             <Text style={styles.text4}>Logout</Text>
                         </TouchableOpacity>
@@ -125,7 +125,9 @@ const styles = StyleSheet.create({
         height: normalize(100),
         borderRadius: 100,
         borderWidth: 1,
-        borderColor: "#dfdfdf"
+        borderColor: "#dfdfdf",
+        justifyContent:"center",
+        alignItems:"center"
     },
     lining: {
         height: normalize(10),
