@@ -11,7 +11,7 @@ const Profil = (props) => {
                 <View style={styles.header}>
                     <Text style={styles.text1}>Profil</Text>
                 </View>
-                <ScrollView>
+                <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={styles.container}>
                         <View style={{ flexDirection: "row" }}>
                             <TouchableOpacity style={styles.imgContainer}>
@@ -21,40 +21,58 @@ const Profil = (props) => {
                             <View style={styles.container2}>
                                 <Text style={styles.text2}>Agustian Adrian</Text>
                                 <Text style={styles.text2}>0 Poin</Text>
-                                <TouchableOpacity style={styles.btn1} onPress={()=>props.navigation.navigate("akun")}>
+                                <TouchableOpacity style={styles.btn1} onPress={() => props.navigation.navigate("akun")}>
                                     <Text style={styles.text3}>Ubah Profil</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
                     </View>
-                    <View style={styles.lining}/>
+                    <View style={styles.lining} />
 
                     <View style={styles.container}>
-                        <TouchableOpacity style={{flexDirection:"row"}}>
-                            <Icon type='font-awesome-5' name='history' size={normalize(30)} color={"#9724DE"} />
-                            <Text style={styles.text4}>Riwayat Donasimu</Text>
+                        <TouchableOpacity style={{ flexDirection: "row" }}>
+                            <Icon type='font-awesome-5' name='id-card' size={normalize(30)} color={"#9724DE"} />
+                            <Text style={styles.text4}>Verifikasi Data Diri</Text>
                         </TouchableOpacity>
 
                         <View style={styles.lining2} />
-                        <TouchableOpacity style={{flexDirection:"row"}}>
+                        <TouchableOpacity style={{ flexDirection: "row" }}>
+                            <Icon type='font-awesome-5' name='hand-holding-usd' size={normalize(30)} color={"#9724DE"} />
+                            <Text style={styles.text4}>+ Buat Pengajuan Donasi</Text>
+                        </TouchableOpacity>
+
+                        <View style={styles.lining2} />
+                        <TouchableOpacity style={{ flexDirection: "row" }}>
+                            <Icon type='font-awesome-5' name='book' size={normalize(30)} color={"#9724DE"} />
+                            <Text style={styles.text4}>Daftar Donasimu</Text>
+                        </TouchableOpacity>
+
+                        <View style={styles.lining2} />
+                        <TouchableOpacity style={{ flexDirection: "row" }}>
+                            <Icon type='font-awesome-5' name='history' size={normalize(30)} color={"#9724DE"} />
+                            <Text style={styles.text4}>Riwayat Donasi</Text>
+                        </TouchableOpacity>
+
+                        <View style={styles.lining2} />
+                        <TouchableOpacity style={{ flexDirection: "row" }}>
                             <Icon type='font-awesome-5' name='envelope' size={normalize(30)} color={"#9724DE"} />
                             <Text style={styles.text4}>Kotak Masuk</Text>
                         </TouchableOpacity>
 
                         <View style={styles.lining2} />
-                        <TouchableOpacity style={{flexDirection:"row"}}>
+                        <TouchableOpacity style={{ flexDirection: "row" }}>
                             <Icon type='font-awesome-5' name='info-circle' size={normalize(30)} color={"#9724DE"} />
                             <Text style={styles.text4}>Bantuan</Text>
                         </TouchableOpacity>
 
                         <View style={styles.lining2} />
-                        <TouchableOpacity style={{flexDirection:"row"}}>
+                        <TouchableOpacity style={{ flexDirection: "row" }} onPress={()=>props.navigation.navigate("login")}>
                             <Icon type='font-awesome' name='sign-out' size={normalize(30)} color={"#9724DE"} />
                             <Text style={styles.text4}>Logout</Text>
                         </TouchableOpacity>
 
                         <View style={styles.lining2} />
-                        <Text style={{textAlign:"center"}}>Ikhlasbantu App Versi 1.0</Text>
+                        <Text style={{ textAlign: "center" }}>Ikhlasbantu App Version 1.0</Text>
                     </View>
                 </ScrollView>
             </View>
@@ -94,13 +112,13 @@ const styles = StyleSheet.create({
         fontFamily: "Quicksand-Bold",
         color: "black",
         fontSize: normalize(16),
-        paddingLeft:normalize(20)
+        paddingLeft: normalize(20)
     },
     text3: {
         fontFamily: "Quicksand-Bold",
         color: "#fff",
         fontSize: normalize(14),
-        textAlign:"center"
+        textAlign: "center"
     },
     imgContainer: {
         width: normalize(100),
@@ -118,7 +136,7 @@ const styles = StyleSheet.create({
         height: normalize(3),
         backgroundColor: "#dfdfdf",
         marginTop: normalize(10),
-        marginBottom:normalize(20)
+        marginBottom: normalize(20)
     },
     container: {
         padding: normalize(20)
@@ -132,7 +150,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         backgroundColor: "#9724DE",
         marginTop: normalize(10),
-        justifyContent:"center",
-        alignItems:"center"
+        justifyContent: "center",
+        alignItems: "center"
     }
 })

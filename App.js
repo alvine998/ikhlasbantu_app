@@ -13,6 +13,7 @@ import Profil from './src/pages/Profil';
 import Register from './src/pages/Register';
 import Reward from './src/pages/Reward';
 import Splash from './src/pages/Splash';
+import Verifikasi from './src/pages/Verifikasi';
 
 const Stack = createStackNavigator();
 
@@ -29,6 +30,7 @@ const App = (props) => {
         <Stack.Screen name='akun' component={Akun}/>
         <Stack.Screen name='reward' component={Reward}/>
         <Stack.Screen name='donasi' component={Donasi}/>
+        <Stack.Screen name='verifikasi' component={Verifikasi}/>
       </Stack.Navigator>
     </NavigationContainer>
     // <View>
