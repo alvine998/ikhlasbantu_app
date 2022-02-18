@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import normalize from 'react-native-normalize';
 
-const Donasi = () => {
+const Donasi = (props) => {
     return (
         <View>
             <StatusBar animated backgroundColor={"#9724DE"} barStyle={'light-content'} />
@@ -37,7 +37,7 @@ const Donasi = () => {
                                     </View>
                                 </TouchableOpacity>
 
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress={()=>props.navigation.navigate("donasi-kesehatan")}>
                                     <View style={styles.imgDonasi2}>
                                         <Text style={styles.text3}>+ Lihat Lainnya</Text>
                                     </View>
