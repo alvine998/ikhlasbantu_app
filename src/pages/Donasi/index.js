@@ -113,6 +113,40 @@ const Donasi = (props) => {
                             </View>
                         </ScrollView>
                     </View>
+
+                    {/* Donasi Lainnya */}
+                    <View style={{ paddingTop: normalize(20), paddingBottom:normalize(30) }}>
+                        <View style={styles.container}>
+                            <Text style={styles.text2}>Donasi Lainnya</Text>
+                        </View>
+                        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                            <View style={styles.rowing}>
+                                <TouchableOpacity>
+                                    <View style={styles.imgDonasi}>
+
+                                    </View>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity>
+                                    <View style={styles.imgDonasi}>
+
+                                    </View>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity>
+                                    <View style={styles.imgDonasi}>
+
+                                    </View>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity>
+                                    <View style={styles.imgDonasi2}>
+                                        <Text style={styles.text3}>+ Lihat Lainnya</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                        </ScrollView>
+                    </View>
                 </ScrollView>
             </View>
         </View>

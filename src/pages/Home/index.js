@@ -11,26 +11,28 @@ const Home = (props) => {
     const [active, setActive] = useState(0);
     const [wdth, setWdth] = useState(0);
     const [collect, setCollect] = useState([]);
+    const [images, setImages] = useState([]);
 
-    // const getdata = () => {
-    //     axios.get(`http://192.168.18.7:4000/banners`).then(
-    //         res => {
-    //             console.log(res.data);
-    //             const collect = res.data;
-    //             setCollect(collect);
-    //         }
-    //     )
-    // }
 
-    // useEffect(()=>{
-    //     getdata();
-    // },[])
+    const getdata = () => {
+        axios.get(`http://192.168.18.7:4000/banners`).then(
+            res => {
+                console.log(res.data);
+                const collect = res.data;
+                setCollect(collect);
+                console.log(collect.map(res => res.gambar))
+            }
+        )
+    }
 
-    const carouselItems = [
-        "http://semestabertasbihgroup.com/wp-content/uploads/2021/06/8-1024x576.png",
-        "http://semestabertasbihgroup.com/wp-content/uploads/2021/06/1-1024x576.png",
-        "http://semestabertasbihgroup.com/wp-content/uploads/2021/06/3-1024x576.png"
-    ];
+    useEffect(() => {
+        getdata();
+    }, [])
+
+
+    const carouselItems = collect.map(res => {
+        `http://192.168.18.7:4000/resources/uploads/${res.gambar}`
+    })
 
     const onLayout = e => {
         setWdth(e.nativeEvent.layout.width)
@@ -73,17 +75,17 @@ const Home = (props) => {
                     <View style={styles.container1}>
                         <Text style={styles.text1}>Pilihan Kategori Donasi</Text>
                         <View style={styles.rowing}>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => props.navigation.navigate("donasi-kesehatan")}>
                                 <Image source={kesehatan} style={styles.imgSize2} />
                                 <Text style={styles.text4}>Kesehatan</Text>
                             </TouchableOpacity>
                             <View style={{ paddingLeft: normalize(40) }} />
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => props.navigation.navigate("donasi-bencana")}>
                                 <Image source={bencana} style={styles.imgSize2} />
                                 <Text style={styles.text4}>Bencana</Text>
                             </TouchableOpacity>
                             <View style={{ paddingLeft: normalize(40) }} />
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => props.navigation.navigate("donasi-sedekah")}>
                                 <Image source={sedekah} style={styles.imgSize2} />
                                 <Text style={styles.text4}>Sedekah</Text>
                             </TouchableOpacity>
@@ -185,6 +187,6 @@ const styles = StyleSheet.create({
     },
     imgSize3: {
         height: normalize(200),
-        width:'100%'
+        width: '100%'
     }
 });
