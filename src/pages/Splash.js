@@ -1,15 +1,34 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StackActions } from '@react-navigation/native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, StatusBar, StyleSheet, View } from 'react-native';
 import normalize from 'react-native-normalize';
 import { logo } from '../assets';
 
 const Splash = (props) => {
+    const [log, setLog] = useState('');
+    const getLogin = async () => {
+        await AsyncStorage.getItem("loginKey").then(
+            res => {
+                setLog(res)
+            }
+        )
+
+        if(log == '' || log == null){
+            setTimeout(() => {
+                props.navigation.dispatch(StackActions.replace("intro"))
+            }, 1500)
+        } else {
+            setTimeout(() => {
+                props.navigation.dispatch(StackActions.replace("home"))
+            }, 1500)
+        }
+    }
+
     useEffect(() => {
-        setTimeout(() => {
-            props.navigation.dispatch(StackActions.replace("intro"))
-        }, 1500)
+        getLogin()
     })
+
     return (
         <View>
             <View style={styles.background}>

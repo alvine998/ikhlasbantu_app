@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Image, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
@@ -13,6 +14,14 @@ const Home = (props) => {
     const [collect, setCollect] = useState([]);
     const [images, setImages] = useState([]);
 
+    const getLogin = async () => {
+        await AsyncStorage.getItem("loginKey").then(
+            res => {
+                console.log("Id: ", res)
+            }
+        )
+    }
+
 
     const getdata = () => {
         axios.get(`http://192.168.18.7:4000/banners`).then(
@@ -27,6 +36,7 @@ const Home = (props) => {
 
     useEffect(() => {
         getdata();
+        getLogin();
     }, [])
 
 

@@ -1,8 +1,9 @@
-import React from 'react';
-import { StatusBar, StyleSheet, Text, View } from 'react-native';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { Image, StatusBar, StyleSheet, Text, View } from 'react-native';
 import normalize from 'react-native-normalize';
 
-const Reward = () => {
+const Reward = (props) => {
     return (
         <View>
             <StatusBar animated backgroundColor={"#9724DE"} barStyle={'light-content'} />
@@ -14,6 +15,7 @@ const Reward = () => {
                 <View style={styles.container}>
                     <Text style={styles.text2}>Belum Ada Rewards {"\n"}Tetap Semangat</Text>
                 </View>
+
             </View>
         </View>
     );

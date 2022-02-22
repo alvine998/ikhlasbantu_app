@@ -1,9 +1,33 @@
-import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { Image, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import normalize from 'react-native-normalize';
+import NumberFormat from 'react-number-format';
 
 const Kesehatan = (props) => {
+    const [collect, setCollect] = useState([])
+
+    const getDataKesehatan = () => {
+        axios.get(`http://192.168.18.7:4000/donasis/valid/kesehatan`).then(
+            res => {
+                const collect = res.data;
+                console.log(collect);
+                setCollect(collect);
+            }
+        )
+    }
+
+    const sendDonasi = async (id) => {
+        await AsyncStorage.setItem("donasiKey",id);
+        props.navigation.navigate("detail-donasi");
+        console.log("ID : ", id)
+    }
+
+    useEffect(() => {
+        getDataKesehatan();
+    }, [])
     return (
         <View>
             <StatusBar animated backgroundColor={"#9724DE"} barStyle={'light-content'} />
@@ -24,28 +48,28 @@ const Kesehatan = (props) => {
                                 </TouchableOpacity>
                             </View>
                         </View>
-
-                        <TouchableOpacity style={{flexDirection:"row"}} onPress={()=>props.navigation.navigate("detail-donasi")}>
-                                <View style={styles.imgSize2}>
-
-                                </View>
-                                <View style={styles.container3}>
-                                    <Text style={styles.text5}>Judul Donasi</Text>
-                                    <Text style={styles.text3}>Nama User</Text>
-                                    <View style={styles.lining} />
-                                    <View style={{flexDirection:"row"}}>
-                                        <View>
-                                            <Text style={styles.text3}>Terkumpul</Text>
-                                            <Text style={styles.text3}>Rp 10.000</Text>
-                                        </View>
-                                        <View style={{flex:1}}>
-                                            <Text style={styles.text4}>Waktu</Text>
-                                            <Text style={styles.text4}>30 Hari</Text>
+                        {
+                            collect.reverse().map((res, i) => (
+                                <TouchableOpacity key={i} style={{ flexDirection: "row" }} onPress={() => sendDonasi(res._id)}>
+                                    <Image source={{ uri: `http://192.168.18.7:4000/resources/uploads/${res.foto}` }} style={styles.imgSize2} />
+                                    <View style={styles.container3}>
+                                        <Text style={styles.text5}>{res.judul}</Text>
+                                        <Text style={styles.text3}>Nama User</Text>
+                                        <View style={styles.lining} />
+                                        <View style={{ flexDirection: "row" }}>
+                                            <View>
+                                                <Text style={styles.text3}>Terkumpul</Text>
+                                                <NumberFormat value={res.terkumpul} thousandSeparator displayType='text' prefix='Rp ' renderText={(value)=><Text style={styles.text3}>{value}</Text>} />
+                                            </View>
+                                            <View style={{ flex: 1 }}>
+                                                <Text style={styles.text4}>Waktu</Text>
+                                                <Text style={styles.text4}>{res.durasi} hari</Text>
+                                            </View>
                                         </View>
                                     </View>
-                                </View>
-                        </TouchableOpacity>
-                        
+                                </TouchableOpacity>
+                            ))
+                        }
                     </View>
                 </ScrollView>
             </View>
@@ -70,7 +94,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         marginTop: normalize(20),
         borderRadius: normalize(20),
-        marginLeft:normalize(20)
+        marginLeft: normalize(20)
     },
     header: {
         height: normalize(50),
@@ -99,7 +123,7 @@ const styles = StyleSheet.create({
         fontFamily: "Quicksand-Bold",
         color: "black",
         fontSize: normalize(14),
-        textAlign:"right"
+        textAlign: "right"
     },
     text5: {
         fontFamily: "Quicksand-Bold",
@@ -113,13 +137,13 @@ const styles = StyleSheet.create({
         marginTop: normalize(0)
     },
     container2: {
-        flexDirection:"row",
+        flexDirection: "row",
     },
     container3: {
         padding: normalize(20),
-        width:normalize(200),
-        height:normalize(150),
-        justifyContent:"center",
+        width: normalize(200),
+        height: normalize(150),
+        justifyContent: "center",
     },
     search: {
         width: normalize(320),
@@ -131,11 +155,11 @@ const styles = StyleSheet.create({
         alignItems: "center",
         flexDirection: "row"
     },
-    lining:{
-        marginTop:normalize(10),
-        height:normalize(3),
-        borderWidth:1,
-        borderColor:"#808080",
-        marginBottom:normalize(10)
+    lining: {
+        marginTop: normalize(10),
+        height: normalize(3),
+        borderWidth: 1,
+        borderColor: "#808080",
+        marginBottom: normalize(10)
     }
 })

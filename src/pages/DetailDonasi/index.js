@@ -1,10 +1,59 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import normalize from 'react-native-normalize';
 import { SliderBox } from 'react-native-image-slider-box';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import NumberFormat from 'react-number-format';
 
 const DetailDonasi = (props) => {
+    const [collect, setCollect] = useState([]);
+    const [key, setKey] = useState('');
+    const [judul, setJudul] = useState('');
+    const [terkumpul, setTerkumpul] = useState(0);
+    const [target, setTarget] = useState(0);
+    const [desc, setDesc] = useState('');
+    const [foto, setFoto] = useState(null);
+    const [len, setLen] = useState([]);
+
+
+    const getDonasi = async () => {
+        await AsyncStorage.getItem("donasiKey").then(
+            res => {
+                console.log(res)
+                setKey(res)
+            }
+        )
+    }
+
+    const lengthDonasi = () => {
+        axios.get(`http://192.168.18.7:4000/transaksi/donasi/${key}`).then(
+            res => {
+                const id = res.data;
+                console.log(id);
+                setLen(id)
+            }
+        )
+    }
+
+    const getData = () => {
+        axios.get(`http://192.168.18.7:4000/donasis/${key}`).then(
+            res => {
+                const collect = res.data;
+                console.log(collect);
+                setJudul(collect.judul); setTerkumpul(collect.terkumpul);
+                setDesc(collect.deskripsi); setFoto(collect.foto);
+                setTarget(collect.target);
+            }
+        )
+    }
+
+    useEffect(() => {
+        getDonasi();
+        getData();
+        lengthDonasi();
+    }, [])
 
     return (
         <View>
@@ -18,41 +67,22 @@ const DetailDonasi = (props) => {
                 </View>
                 <ScrollView>
                     <View style={styles.container}>
-                        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                            <TouchableOpacity>
-                                <View style={styles.banner}>
-
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity>
-                                <View style={styles.banner}>
-
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity>
-                                <View style={styles.banner}>
-
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity>
-                                <View style={styles.banner}>
-
-                                </View>
-                            </TouchableOpacity>
-                        </ScrollView>
+                        <TouchableOpacity>
+                            <Image source={{uri: `http://192.168.18.7:4000/resources/uploads/${foto}`}} style={styles.imgSize2} />
+                        </TouchableOpacity>
                     </View>
 
                     <View style={styles.container2}>
-                        <Text style={styles.text2}>Judul Donasi</Text>
+                        <Text style={styles.text2}>{judul}</Text>
                         <View style={styles.container4}>
-                            <Text style={styles.text5}>Rp 10.000</Text>
+                        <NumberFormat value={terkumpul} thousandSeparator displayType='text' prefix='Rp ' renderText={(value)=><Text style={styles.text5} >{value}</Text>} />
                             <View style={styles.lining2}>
                                 {/* <View style={styles.lining3}>
 
                                 </View> */}
                             </View>
                             <View style={{ flexDirection: "row" }}>
-                                <Text style={styles.text6}>Donasi (10)</Text>
+                                <Text style={styles.text6}>Donasi ({len.length})</Text>
                                 <Text style={styles.textR}>Rp 10.000</Text>
                             </View>
                             <TouchableOpacity>
@@ -63,7 +93,7 @@ const DetailDonasi = (props) => {
                         </View>
                         <Text style={styles.text3}>Deskripsi :</Text>
                         <View style={styles.container3}>
-                            <Text style={styles.text4}>Lorem ipsum pori nama juga terus pol minum sdna sdjakisnd asidajns asjdhni asidujow azosijdoajhnda iksudhaik</Text>
+                            <Text style={styles.text4}>{desc}</Text>
                         </View>
                     </View>
                 </ScrollView>
@@ -84,12 +114,10 @@ const styles = StyleSheet.create({
         width: normalize(200)
     },
     imgSize2: {
-        height: normalize(150),
-        width: normalize(150),
+        height: normalize(250),
+        width: normalize(350),
         borderWidth: 1,
-        marginTop: normalize(20),
         borderRadius: normalize(20),
-        marginLeft: normalize(20)
     },
     header: {
         height: normalize(50),
@@ -141,8 +169,8 @@ const styles = StyleSheet.create({
         fontFamily: "Quicksand-Bold",
         color: "black",
         fontSize: normalize(16),
-        textAlign:"right",
-        flex:1
+        textAlign: "right",
+        flex: 1
     },
     container: {
         padding: normalize(20),

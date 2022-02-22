@@ -2,8 +2,15 @@ import React from 'react';
 import { ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import normalize from 'react-native-normalize';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Profil = (props) => {
+
+    const removeLogin = async () => {
+        await AsyncStorage.removeItem("loginKey");
+        props.navigation.navigate("login");
+        console.log("Done Remove");
+    }
     return (
         <View>
             <StatusBar animated backgroundColor={"#9724DE"} barStyle={'light-content'} />
@@ -66,7 +73,7 @@ const Profil = (props) => {
                         </TouchableOpacity>
 
                         <View style={styles.lining2} />
-                        <TouchableOpacity style={{ flexDirection: "row" }} onPress={() => props.navigation.navigate("login")}>
+                        <TouchableOpacity style={{ flexDirection: "row" }} onPress={() => removeLogin()}>
                             <Icon type='font-awesome' name='sign-out' size={normalize(30)} color={"#9724DE"} />
                             <Text style={styles.text4}>Logout</Text>
                         </TouchableOpacity>

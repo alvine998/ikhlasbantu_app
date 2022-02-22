@@ -1,9 +1,18 @@
-import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useState } from 'react';
 import { Image, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import normalize from 'react-native-normalize';
 import { logo } from '../../assets';
 
 const Login = (props) => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const sendLogin = async (mail) => {
+        await AsyncStorage.setItem("loginKey", mail);
+        props.navigation.navigate("home");
+        console.log("login in")
+    }
     return (
         <View>
             <StatusBar animated backgroundColor={"#9724DE"} />
@@ -13,16 +22,16 @@ const Login = (props) => {
 
                     <View style={{ paddingTop: normalize(20) }}>
                         <View style={styles.tube}>
-                            <TextInput placeholder='Email' placeholderTextColor={"#808080"} style={{ color: "black" }} />
+                            <TextInput value={email} onChangeText={(e)=>setEmail(e)} placeholder='Email' placeholderTextColor={"#808080"} style={{ color: "black" }} />
                         </View>
 
                         <View style={{ paddingTop: normalize(10) }} />
                         <View style={styles.tube}>
-                            <TextInput placeholder='Password' placeholderTextColor={"#808080"} secureTextEntry={true} style={{ color: "black" }} />
+                            <TextInput value={password} onChangeText={(e)=>setPassword(e)} placeholder='Password' placeholderTextColor={"#808080"} secureTextEntry={true} style={{ color: "black" }} />
                         </View>
 
                         <View style={{ paddingTop: normalize(20) }}>
-                            <TouchableOpacity style={styles.btnMasuk} onPress={() => props.navigation.navigate("home")}>
+                            <TouchableOpacity style={styles.btnMasuk} onPress={() => sendLogin(email)}>
                                 <Text style={styles.text1}>Masuk</Text>
                             </TouchableOpacity>
                         </View>

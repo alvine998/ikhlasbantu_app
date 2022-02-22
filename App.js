@@ -29,7 +29,7 @@ const Stack = createStackNavigator();
 const App = (props) => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={ props.showRealApp == true ? 'login' : 'intro'} screenOptions={{headerShown:false}}>
+      <Stack.Navigator initialRouteName={"splash"} screenOptions={{headerShown:false}}>
         <Stack.Screen name='splash' component={Splash}/>
         <Stack.Screen name='intro' component={Intro}/>
         <Stack.Screen name='login' component={Login}/>
