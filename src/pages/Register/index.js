@@ -1,9 +1,43 @@
-import React from 'react';
-import { Image, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { Alert, Image, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import normalize from 'react-native-normalize';
 import { logo } from '../../assets';
+import axios from 'axios';
 
 const Register = (props) => {
+
+    const [nama, setNama] = useState('');
+    const [nohp, setNohp] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const saveData = () => {
+        if(!nama){
+            Alert.alert("Nama tidak boleh kosong")
+        } else if(!nohp){
+            Alert.alert("No Hp tidak boleh kosong")
+        } else if(!email){
+            Alert.alert("Email tidak boleh kosong")
+        } else if(!password){
+            Alert.alert("Password tidak boleh kosong")
+        } else {
+            const data = {
+                nama: nama,
+                nohp: nohp,
+                email: email,
+                password: password,
+            }
+            axios.post(`http://192.168.18.7:4000/users`, data).then(
+                res => {
+                    console.log("Sukses Register", res.data);
+                    Alert.alert("Sukses Daftar");
+                    setEmail(""); setNama(""); setNohp("");
+                    setPassword("");
+                }
+            )
+        }
+    }
+
     return (
         <View>
             <StatusBar animated backgroundColor={"#9724DE"} />
@@ -13,26 +47,26 @@ const Register = (props) => {
 
                     <View style={{ paddingTop: normalize(20) }}>
                         <View style={styles.tube}>
-                            <TextInput placeholder='Nama Lengkap' placeholderTextColor={"#808080"} style={{ color: "black" }} />
+                            <TextInput value={nama} onChangeText={(e)=>setNama(e)} placeholder='Nama Lengkap' placeholderTextColor={"#808080"} style={{ color: "black" }} />
                         </View>
 
                         <View style={{ paddingTop: normalize(10) }} />
                         <View style={styles.tube}>
-                            <TextInput placeholder='No Handphone' placeholderTextColor={"#808080"} style={{ color: "black" }} />
+                            <TextInput keyboardType='phone-pad' maxLength={12} value={nohp} onChangeText={(e)=>setNohp(e)} placeholder='No Handphone' placeholderTextColor={"#808080"} style={{ color: "black" }} />
                         </View>
 
                         <View style={{ paddingTop: normalize(10) }} />
                         <View style={styles.tube}>
-                            <TextInput placeholder='Email' placeholderTextColor={"#808080"} style={{ color: "black" }} />
+                            <TextInput value={email} onChangeText={(e)=>setEmail(e)} placeholder='Email' placeholderTextColor={"#808080"} style={{ color: "black" }} />
                         </View>
 
                         <View style={{ paddingTop: normalize(10) }} />
                         <View style={styles.tube}>
-                            <TextInput placeholder='Password' placeholderTextColor={"#808080"} secureTextEntry={true} style={{ color: "black" }} />
+                            <TextInput value={password} onChangeText={(e)=>setPassword(e)} placeholder='Password' placeholderTextColor={"#808080"} secureTextEntry={true} style={{ color: "black" }} />
                         </View>
 
                         <View style={{ paddingTop: normalize(20) }}>
-                            <TouchableOpacity style={styles.btnMasuk} onPress={() => props.navigation.navigate("login")}>
+                            <TouchableOpacity style={styles.btnMasuk} onPress={() => saveData()}>
                                 <Text style={styles.text1}>Daftar</Text>
                             </TouchableOpacity>
                         </View>

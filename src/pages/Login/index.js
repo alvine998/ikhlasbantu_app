@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 import React, { useState } from 'react';
-import { Image, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import normalize from 'react-native-normalize';
 import { logo } from '../../assets';
 
@@ -12,6 +13,22 @@ const Login = (props) => {
         await AsyncStorage.setItem("loginKey", mail);
         props.navigation.navigate("home");
         console.log("login in")
+    }
+
+    const onLogin = (mail) => {
+        const data = {
+            email: email,
+            password: password
+        }
+        axios.post(`http://192.168.18.7:4000/users/login`, data).then(
+            res => {
+                console.log("Berhasil Login", res.data);
+                sendLogin(mail);
+            }
+        ).catch(err => {
+            Alert.alert("Username atau Password Salah");
+            console.log(err)
+        })
     }
     return (
         <View>
@@ -31,7 +48,7 @@ const Login = (props) => {
                         </View>
 
                         <View style={{ paddingTop: normalize(20) }}>
-                            <TouchableOpacity style={styles.btnMasuk} onPress={() => sendLogin(email)}>
+                            <TouchableOpacity style={styles.btnMasuk} onPress={() => onLogin(email)}>
                                 <Text style={styles.text1}>Masuk</Text>
                             </TouchableOpacity>
                         </View>

@@ -55,7 +55,7 @@ const Home = (props) => {
                 <View style={styles.header}>
                     <Image source={logo} style={styles.imgSize} />
                     <View style={styles.search}>
-                        <TextInput placeholder='Cari donasi disini' style={{ width: normalize(250), height: normalize(50) }} />
+                        <TextInput placeholder='Cari donasi disini' placeholderTextColor={"#808080"} style={{ width: normalize(250), height: normalize(50) }} />
                         <TouchableOpacity>
                             <Icon type='font-awesome-5' name='search' />
                         </TouchableOpacity>
