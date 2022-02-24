@@ -8,6 +8,7 @@ import NumberFormat from 'react-number-format';
 
 const Kesehatan = (props) => {
     const [collect, setCollect] = useState([])
+    const [nama, setNama] = useState('')
 
     const getDataKesehatan = () => {
         axios.get(`http://192.168.18.7:4000/donasis/valid/kesehatan`).then(
@@ -17,6 +18,10 @@ const Kesehatan = (props) => {
                 setCollect(collect);
             }
         )
+    }
+
+    const getDataUser = () => {
+        
     }
 
     const sendDonasi = async (id) => {
@@ -42,7 +47,7 @@ const Kesehatan = (props) => {
                     <View style={styles.container}>
                         <View>
                             <View style={styles.search}>
-                                <TextInput placeholder='Cari disini' style={{ width: normalize(270) }} />
+                            <TextInput placeholder='Cari donasi disini' placeholderTextColor={"#808080"} style={{ width: normalize(300), height: normalize(50) }} />
                                 <TouchableOpacity>
                                     <Icon type='font-awesome' name='search' />
                                 </TouchableOpacity>
@@ -54,7 +59,6 @@ const Kesehatan = (props) => {
                                     <Image source={{ uri: `http://192.168.18.7:4000/resources/uploads/${res.foto}` }} style={styles.imgSize2} />
                                     <View style={styles.container3}>
                                         <Text style={styles.text5}>{res.judul}</Text>
-                                        <Text style={styles.text3}>Nama User</Text>
                                         <View style={styles.lining} />
                                         <View style={{ flexDirection: "row" }}>
                                             <View>
@@ -146,7 +150,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     search: {
-        width: normalize(320),
+        width: normalize(350),
         height: normalize(40),
         borderWidth: 1,
         borderRadius: 20,

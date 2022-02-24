@@ -24,12 +24,14 @@ const Login = (props) => {
             res => {
                 console.log("Berhasil Login", res.data);
                 sendLogin(mail);
+                setEmail(""); setPassword("");
             }
         ).catch(err => {
             Alert.alert("Username atau Password Salah");
             console.log(err)
         })
     }
+
     return (
         <View>
             <StatusBar animated backgroundColor={"#9724DE"} />

@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import NumberFormat from 'react-number-format';
 
-const DetailDonasi = (props) => {
+const Pembayaran = (props) => {
     const [collect, setCollect] = useState([]);
     const [key, setKey] = useState('');
     const [judul, setJudul] = useState('');
@@ -18,49 +18,6 @@ const DetailDonasi = (props) => {
     const [len, setLen] = useState([]); 
     const [nama, setNama] = useState('');
 
-
-    const getDonasi = async () => {
-        await AsyncStorage.getItem("donasiKey").then(
-            res => {
-                console.log(res)
-                setKey(res)
-            }
-        )
-    }
-
-    const lengthDonasi = () => {
-        axios.get(`http://192.168.18.7:4000/transaksi/donasi/${key}`).then(
-            res => {
-                const id = res.data;
-                console.log(id);
-                setLen(id)
-            }
-        )
-    }
-
-    const getData = () => {
-        axios.get(`http://192.168.18.7:4000/donasis/${key}`).then(
-            res => {
-                const collect = res.data;
-                console.log(collect);
-                setJudul(collect.judul); setTerkumpul(collect.terkumpul);
-                setDesc(collect.deskripsi); setFoto(collect.foto);
-                setTarget(collect.target);
-                collect.id_users.forEach((e)=>{
-                    console.log(e.nama)
-                    setNama(e.nama);
-                })
-                // setNama(...collect,namauser);
-            }
-        )
-    }
-
-    useEffect(() => {
-        getDonasi();
-        getData();
-        lengthDonasi();
-    }, [])
-
     return (
         <View>
             <StatusBar animated backgroundColor={"#9724DE"} barStyle={'light-content'} />
@@ -69,47 +26,17 @@ const DetailDonasi = (props) => {
                     <TouchableOpacity style={{ paddingRight: normalize(20) }} onPress={() => props.navigation.goBack()}>
                         <Icon type='font-awesome' name='arrow-left' color={"#fff"} size={normalize(20)} />
                     </TouchableOpacity>
-                    <Text style={styles.text1}>Detail Donasi</Text>
+                    <Text style={styles.text1}>Pembayaran</Text>
                 </View>
                 <ScrollView>
-                    <View style={styles.container}>
-                        <TouchableOpacity>
-                            <Image source={{uri: `http://192.168.18.7:4000/resources/uploads/${foto}`}} style={styles.imgSize2} />
-                        </TouchableOpacity>
-                    </View>
-
-                    <View style={styles.container2}>
-                        <Text style={styles.text2}>{judul}</Text>
-                        <Text style={styles.text2}>{nama}</Text>
-                        <View style={styles.container4}>
-                        <NumberFormat value={terkumpul} thousandSeparator displayType='text' prefix='Rp ' renderText={(value)=><Text style={styles.text5} >{value}</Text>} />
-                            <View style={styles.lining2}>
-                                {/* <View style={styles.lining3}>
-
-                                </View> */}
-                            </View>
-                            <View style={{ flexDirection: "row" }}>
-                                <Text style={styles.text6}>Donasi ({len.length})</Text>
-                                <NumberFormat value={target} thousandSeparator displayType='text' prefix='Rp ' renderText={(value)=><Text style={styles.textR} >{value}</Text>} />
-                            </View>
-                            <TouchableOpacity onPress={()=>props.navigation.navigate("pembayaran")}>
-                                <View style={styles.btn1}>
-                                    <Text style={styles.text1}>Donasi Sekarang</Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                        <Text style={styles.text3}>Deskripsi :</Text>
-                        <View style={styles.container3}>
-                            <Text style={styles.text4}>{desc}</Text>
-                        </View>
-                    </View>
+                    
                 </ScrollView>
             </View>
         </View>
     );
 }
 
-export default DetailDonasi;
+export default Pembayaran;
 
 const styles = StyleSheet.create({
     background: {
