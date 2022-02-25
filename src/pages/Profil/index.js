@@ -1,16 +1,47 @@
-import React from 'react';
-import { ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Alert, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import normalize from 'react-native-normalize';
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import axios from 'axios';
 
 const Profil = (props) => {
+    const [statusUser, setStatusUser] = useState('')
+    const [nama, setNama] = useState('')
+    const [poin, setPoin] = useState(0)
+
+    const getDataUser = async () => {
+        await AsyncStorage.getItem("loginKey").then(
+            res => {
+                axios.get(`http://192.168.18.7:4000/users/mail/${res}`).then(
+                    result => {
+                        const results = result.data;
+                        setStatusUser(results.statususer); setNama(results.nama);
+                        setPoin(results.poin);
+                        console.log(results);
+                    }
+                )
+            }
+        )
+    }
+
+    const ajukanDonasi = () => {
+        if(statusUser == "not verified"){
+            Alert.alert("Silahkan verifikasi data diri")
+        } else{
+            Alert.alert("Ok")
+        }
+    }
 
     const removeLogin = async () => {
         await AsyncStorage.removeItem("loginKey");
         props.navigation.navigate("login");
         console.log("Done Remove");
     }
+
+    useEffect(()=>{
+        getDataUser();
+    },[])
     return (
         <View>
             <StatusBar animated backgroundColor={"#9724DE"} barStyle={'light-content'} />
@@ -26,8 +57,8 @@ const Profil = (props) => {
                             </TouchableOpacity>
 
                             <View style={styles.container2}>
-                                <Text style={styles.text2}>Agustian Adrian</Text>
-                                <Text style={styles.text2}>0 Poin</Text>
+                                <Text style={styles.text2}>{nama}</Text>
+                                <Text style={styles.text2}>{poin} Poin</Text>
                                 <TouchableOpacity style={styles.btn1} onPress={() => props.navigation.navigate("akun")}>
                                     <Text style={styles.text3}>Ubah Profil</Text>
                                 </TouchableOpacity>
@@ -37,13 +68,13 @@ const Profil = (props) => {
                     <View style={styles.lining} />
 
                     <View style={styles.container}>
-                        <TouchableOpacity style={{ flexDirection: "row" }}>
+                        <TouchableOpacity style={{ flexDirection: "row" }} onPress={()=>props.navigation.navigate("verifikasi")}>
                             <Icon type='font-awesome-5' name='id-card' size={normalize(30)} color={"#9724DE"} />
                             <Text style={styles.text4}>Verifikasi Data Diri</Text>
                         </TouchableOpacity>
 
                         <View style={styles.lining2} />
-                        <TouchableOpacity style={{ flexDirection: "row" }}>
+                        <TouchableOpacity style={{ flexDirection: "row" }} onPress={()=>ajukanDonasi()}>
                             <Icon type='font-awesome-5' name='hand-holding-usd' size={normalize(30)} color={"#9724DE"} />
                             <Text style={styles.text4}>+ Buat Pengajuan Donasi</Text>
                         </TouchableOpacity>
@@ -151,7 +182,7 @@ const styles = StyleSheet.create({
         padding: normalize(20)
     },
     container2: {
-        paddingLeft: normalize(80),
+        paddingLeft: normalize(50),
         justifyContent: "center",
     },
     btn1: {
@@ -160,6 +191,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#9724DE",
         marginTop: normalize(10),
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        width:normalize(150)
     }
 })

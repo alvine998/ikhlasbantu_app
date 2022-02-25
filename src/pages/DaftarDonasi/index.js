@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Icon } from 'react-native-elements';
 import normalize from 'react-native-normalize';
 import { emptyMessage } from '../../assets';
 
@@ -9,6 +10,9 @@ const DaftarDonasi = (props) => {
             <StatusBar animated backgroundColor={"#9724DE"} barStyle={'light-content'} />
             <View style={styles.background}>
                 <View style={styles.header}>
+                    <TouchableOpacity style={{ paddingRight: normalize(20) }} onPress={() => props.navigation.navigate("home")}>
+                        <Icon type='font-awesome' name='arrow-left' color={"#fff"} size={normalize(20)} />
+                    </TouchableOpacity>
                     <Text style={styles.text1}>Daftar Donasi</Text>
                 </View>
                 <ScrollView>
@@ -18,11 +22,11 @@ const DaftarDonasi = (props) => {
                             <Text style={styles.text2}>Kamu Belum Membuat Pengajuan Donasi Apapun</Text>
                         </View>
 
-                        <TouchableOpacity onPress={()=>props.navigation.navigate("home")}>
+                        {/* <TouchableOpacity onPress={()=>props.navigation.navigate("home")}>
                             <View style={styles.btnBuat}>
                                 <Text style={styles.text1}>Buat Pengajuan Donasi</Text>
                             </View>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                     </View>
                 </ScrollView>
             </View>
@@ -58,19 +62,19 @@ const styles = StyleSheet.create({
         color: "#9724DE",
         fontSize: normalize(20),
     },
-    container:{
-        padding:normalize(20),
-        justifyContent:"center",
-        alignItems:"center",
-        marginTop:normalize(150)
+    container: {
+        padding: normalize(20),
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: normalize(150)
     },
-    btnBuat:{
-        width:normalize(280),
-        height:normalize(50),
-        backgroundColor:"#9724DE",
-        borderRadius:20,
-        justifyContent:"center",
-        alignItems:"center",
-        marginTop:normalize(20)
+    btnBuat: {
+        width: normalize(280),
+        height: normalize(50),
+        backgroundColor: "#9724DE",
+        borderRadius: 20,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: normalize(20)
     }
 })

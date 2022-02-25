@@ -15,7 +15,7 @@ const DetailDonasi = (props) => {
     const [target, setTarget] = useState(0);
     const [desc, setDesc] = useState('');
     const [foto, setFoto] = useState(null);
-    const [len, setLen] = useState([]); 
+    const [len, setLen] = useState([]);
     const [nama, setNama] = useState('');
 
 
@@ -24,41 +24,40 @@ const DetailDonasi = (props) => {
             res => {
                 console.log(res)
                 setKey(res)
+                
+                axios.get(`http://192.168.18.7:4000/transaksi/donasi/${res}`).then(
+                    res => {
+                        const id = res.data;
+                        console.log(id);
+                        setLen(id)
+                    }
+                )
+
+                axios.get(`http://192.168.18.7:4000/donasis/${res}`).then(
+                    res => {
+                        const collect = res.data;
+                        console.log(collect);
+                        setJudul(collect.judul); setTerkumpul(collect.terkumpul);
+                        setDesc(collect.deskripsi); setFoto(collect.foto);
+                        setTarget(collect.target);
+                        collect.id_users.forEach((e) => {
+                            console.log(e.nama)
+                            setNama(e.nama);
+                        })
+                    }
+                )
             }
         )
     }
 
-    const lengthDonasi = () => {
-        axios.get(`http://192.168.18.7:4000/transaksi/donasi/${key}`).then(
-            res => {
-                const id = res.data;
-                console.log(id);
-                setLen(id)
-            }
-        )
+    const removeKey = async () => {
+        await AsyncStorage.removeItem("donasiKey");
+        props.navigation.goBack();
     }
 
-    const getData = () => {
-        axios.get(`http://192.168.18.7:4000/donasis/${key}`).then(
-            res => {
-                const collect = res.data;
-                console.log(collect);
-                setJudul(collect.judul); setTerkumpul(collect.terkumpul);
-                setDesc(collect.deskripsi); setFoto(collect.foto);
-                setTarget(collect.target);
-                collect.id_users.forEach((e)=>{
-                    console.log(e.nama)
-                    setNama(e.nama);
-                })
-                // setNama(...collect,namauser);
-            }
-        )
-    }
 
     useEffect(() => {
         getDonasi();
-        getData();
-        lengthDonasi();
     }, [])
 
     return (
@@ -66,7 +65,7 @@ const DetailDonasi = (props) => {
             <StatusBar animated backgroundColor={"#9724DE"} barStyle={'light-content'} />
             <View style={styles.background}>
                 <View style={styles.header}>
-                    <TouchableOpacity style={{ paddingRight: normalize(20) }} onPress={() => props.navigation.goBack()}>
+                    <TouchableOpacity style={{ paddingRight: normalize(20) }} onPress={() => removeKey()}>
                         <Icon type='font-awesome' name='arrow-left' color={"#fff"} size={normalize(20)} />
                     </TouchableOpacity>
                     <Text style={styles.text1}>Detail Donasi</Text>
@@ -74,7 +73,7 @@ const DetailDonasi = (props) => {
                 <ScrollView>
                     <View style={styles.container}>
                         <TouchableOpacity>
-                            <Image source={{uri: `http://192.168.18.7:4000/resources/uploads/${foto}`}} style={styles.imgSize2} />
+                            <Image source={{ uri: `http://192.168.18.7:4000/resources/uploads/${foto}` }} style={styles.imgSize2} />
                         </TouchableOpacity>
                     </View>
 
@@ -82,7 +81,7 @@ const DetailDonasi = (props) => {
                         <Text style={styles.text2}>{judul}</Text>
                         <Text style={styles.text2}>{nama}</Text>
                         <View style={styles.container4}>
-                        <NumberFormat value={terkumpul} thousandSeparator displayType='text' prefix='Rp ' renderText={(value)=><Text style={styles.text5} >{value}</Text>} />
+                            <NumberFormat value={terkumpul} thousandSeparator displayType='text' prefix='Rp ' renderText={(value) => <Text style={styles.text5} >{value}</Text>} />
                             <View style={styles.lining2}>
                                 {/* <View style={styles.lining3}>
 
@@ -90,9 +89,9 @@ const DetailDonasi = (props) => {
                             </View>
                             <View style={{ flexDirection: "row" }}>
                                 <Text style={styles.text6}>Donasi ({len.length})</Text>
-                                <NumberFormat value={target} thousandSeparator displayType='text' prefix='Rp ' renderText={(value)=><Text style={styles.textR} >{value}</Text>} />
+                                <NumberFormat value={target} thousandSeparator displayType='text' prefix='Rp ' renderText={(value) => <Text style={styles.textR} >{value}</Text>} />
                             </View>
-                            <TouchableOpacity onPress={()=>props.navigation.navigate("pembayaran")}>
+                            <TouchableOpacity onPress={() => props.navigation.navigate("pembayaran")}>
                                 <View style={styles.btn1}>
                                     <Text style={styles.text1}>Donasi Sekarang</Text>
                                 </View>
@@ -198,12 +197,12 @@ const styles = StyleSheet.create({
     btn1: {
         width: normalize(330),
         height: normalize(40),
-        backgroundColor:"#9724DE",
+        backgroundColor: "#9724DE",
         borderRadius: 20,
         borderColor: "#808080",
         justifyContent: "center",
         alignItems: "center",
-        marginTop:normalize(20)
+        marginTop: normalize(20)
     },
     lining: {
         marginTop: normalize(10),

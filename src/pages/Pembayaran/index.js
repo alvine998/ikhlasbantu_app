@@ -6,6 +6,9 @@ import { SliderBox } from 'react-native-image-slider-box';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import NumberFormat from 'react-number-format';
+import { muamalat, payment } from '../../assets';
+import ImageCropPicker from 'react-native-image-crop-picker';
+import { uploadReplaceImage } from '../../utils';
 
 const Pembayaran = (props) => {
     const [collect, setCollect] = useState([]);
@@ -15,8 +18,48 @@ const Pembayaran = (props) => {
     const [target, setTarget] = useState(0);
     const [desc, setDesc] = useState('');
     const [foto, setFoto] = useState(null);
-    const [len, setLen] = useState([]); 
+    const [len, setLen] = useState([]);
     const [nama, setNama] = useState('');
+
+    const [photo, setPhoto] = useState('');
+    const [oldphoto, setOldPhoto] = useState('');
+
+    const selectImage = () => {
+        ImageCropPicker.openPicker({
+            width:normalize(150),
+            height:normalize(250),
+            cropping: true,
+            cropperCircleOverlay: false
+        }).then(image=>{
+            console.log(image.path);
+            setPhoto(image.path);
+            uploadImage();
+        })
+    }
+
+    const uploadImage = async () => {
+        console.log(photo);
+        const newPhoto = photo;
+        const oldPhoto = oldphoto;
+        const urlImage = `http://192.168.18.7:4000/resources/uploads/`;
+        let newUpload = '';
+        if(newPhoto === urlImage + oldPhoto){
+            newUpload = oldPhoto;
+        } else {
+            newUpload = newPhoto;
+        };
+
+        let result = {info:''};
+        try{
+            result = await uploadReplaceImage(oldPhoto, newUpload, newPhoto);
+        } catch(err){
+            console.log("Error : ", err);
+        };
+
+        const dataUpdate = {
+            images: result.info 
+        }
+    }
 
     return (
         <View>
@@ -29,7 +72,32 @@ const Pembayaran = (props) => {
                     <Text style={styles.text1}>Pembayaran</Text>
                 </View>
                 <ScrollView>
-                    
+                    <View style={styles.container}>
+                        <Image source={muamalat} style={styles.imgSize2} />
+                        <Text style={styles.text2}>No Rekening : (147) 3460006152 {"\n"}A.N{"\n"}Yayasan Semesta Bertasbih</Text>
+                        <View style={styles.container}>
+                            <TouchableOpacity onPress={()=>selectImage()}>
+                                {
+                                    photo == '' ? (
+                                        <Image source={payment} style={styles.imgSize} />
+                                    ) : (
+                                        <Image source={{uri: oldphoto !== photo ? photo : `http://192.168.18.7:4000/resources/uploads/${oldphoto}`}} style={styles.imgSize} />
+                                    )
+                                }
+                                {/* {
+                                    (photo !== '' || oldphoto !== '') && (
+                                        <Image source={{uri: oldphoto !== photo ? photo : `http://192.168.18.7:4000/resources/uploads/${oldphoto}`}} style={styles.imgSize} />
+                                    )
+                                } */}
+                                <Text style={styles.text5}>Upload disini</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <TouchableOpacity >
+                            <View style={styles.btn1}>
+                                <Text style={styles.text1}>Konfirmasi Pembayaran</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
                 </ScrollView>
             </View>
         </View>
@@ -48,10 +116,8 @@ const styles = StyleSheet.create({
         width: normalize(200)
     },
     imgSize2: {
-        height: normalize(250),
-        width: normalize(350),
-        borderWidth: 1,
-        borderRadius: normalize(20),
+        height: normalize(150),
+        width: normalize(250),
     },
     header: {
         height: normalize(50),
@@ -76,6 +142,8 @@ const styles = StyleSheet.create({
         fontFamily: "Quicksand-Bold",
         color: "#9724DE",
         fontSize: normalize(20),
+        marginTop: normalize(-30),
+        textAlign: "center"
     },
     text3: {
         fontFamily: "Quicksand-Bold",
@@ -92,7 +160,8 @@ const styles = StyleSheet.create({
     text5: {
         fontFamily: "Quicksand-Bold",
         color: "#9724DE",
-        fontSize: normalize(16),
+        fontSize: normalize(20),
+        textAlign:"center"
     },
     text6: {
         fontFamily: "Quicksand-Bold",
@@ -125,12 +194,12 @@ const styles = StyleSheet.create({
     btn1: {
         width: normalize(330),
         height: normalize(40),
-        backgroundColor:"#9724DE",
+        backgroundColor: "#9724DE",
         borderRadius: 20,
         borderColor: "#808080",
         justifyContent: "center",
         alignItems: "center",
-        marginTop:normalize(20)
+        marginTop: normalize(20)
     },
     lining: {
         marginTop: normalize(10),

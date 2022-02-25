@@ -1,14 +1,18 @@
 import React from 'react';
-import { Image, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { Image, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Icon } from 'react-native-elements';
 import normalize from 'react-native-normalize';
 import { emptyMessage } from '../../assets';
 
-const KotakMasuk = () => {
+const KotakMasuk = (props) => {
     return (
         <View>
             <StatusBar animated backgroundColor={"#9724DE"} barStyle={'light-content'} />
             <View style={styles.background}>
                 <View style={styles.header}>
+                    <TouchableOpacity style={{ paddingRight: normalize(20) }} onPress={() => props.navigation.navigate("home")}>
+                        <Icon type='font-awesome' name='arrow-left' color={"#fff"} size={normalize(20)} />
+                    </TouchableOpacity>
                     <Text style={styles.text1}>Kotak Masuk</Text>
                 </View>
                 <ScrollView>
@@ -52,10 +56,10 @@ const styles = StyleSheet.create({
         color: "#9724DE",
         fontSize: normalize(20),
     },
-    container:{
-        padding:normalize(20),
-        justifyContent:"center",
-        alignItems:"center",
-        marginTop:normalize(150)
+    container: {
+        padding: normalize(20),
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: normalize(150)
     }
 })

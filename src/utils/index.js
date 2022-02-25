@@ -13,7 +13,7 @@ export const uploadReplaceImage = async (oldFile, newFile, newName) => {
 
     // Hapus foto lama
     if(oldFile !== ""){
-        await axios.delete(`http://10.0.2.2:4000/delete/${oldFile}`);
+        await axios.delete(`http://192.168.18.7:4000/delete/${oldFile}`);
     }
 
     // Hapus foto profil
@@ -33,6 +33,11 @@ export const uploadReplaceImage = async (oldFile, newFile, newName) => {
 
     formData.append("image", photo);
 
-    const {data: dataImage} = await axios.post(`http:10.0.2.2:4000/uploads`, formData);
+    const {data: dataImage} = await axios.post(`http://192.168.18.7:4000/upload`, formData).then(
+        res => {
+            console.log(res.data);
+            console.log(photo);
+        }
+    );
     return dataImage;
 }
