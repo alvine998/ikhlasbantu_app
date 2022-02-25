@@ -99,9 +99,9 @@ const Akun = (props) => {
                             <Text style={styles.text1}>Simpan</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.tubeCancel} onPress={() => props.navigation.navigate("home")}>
+                        {/* <TouchableOpacity style={styles.tubeCancel} onPress={() => props.navigation.navigate("home")}>
                             <Text style={styles.text1}>Kembali</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                     </View>
                 </ScrollView>
             </View>
