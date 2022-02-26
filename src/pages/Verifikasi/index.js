@@ -9,52 +9,65 @@ import NumberFormat from 'react-number-format';
 import { ktp, muamalat, payment } from '../../assets';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import { uploadReplaceImage } from '../../utils';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 const Verifikasi = (props) => {
     const [collect, setCollect] = useState([]);
     const [key, setKey] = useState('');
 
-    const [photo, setPhoto] = useState('');
+    const [photo, setPhoto] = useState(null);
     const [oldphoto, setOldPhoto] = useState('');
+    const [statusUser, setStatusUser] = useState('');
+    const [statusKTP, setStatusKTP] = useState('');
+
+    // const selectImage = () => {
+    //     ImageCropPicker.openPicker({
+    //         width: normalize(350),
+    //         height: normalize(200),
+    //         cropping: true,
+    //         cropperCircleOverlay: false
+    //     }).then(image => {
+    //         console.log(image);
+    //         setPhoto(image.path);
+    //     })
+    // }
 
     const selectImage = () => {
-        ImageCropPicker.openPicker({
-            width:normalize(350),
-            height:normalize(200),
-            cropping: true,
-            cropperCircleOverlay: false
-        }).then(image=>{
-            console.log(image.path);
-            setPhoto(image.path);
-            uploadImage();
+        launchImageLibrary({noData: true}, (response) => {
+            if(response){
+                const anything = response.assets;
+                const arr = anything.map((e,i)=>e.uri);
+                console.log(arr[0])
+                setPhoto(arr[0])
+            }
         })
     }
 
-    const uploadImage = async () => {
-        console.log("uri : ",photo);
-        const newPhoto = photo;
-        const oldPhoto = oldphoto;
-        const urlImage = `http://192.168.18.7:4000/resources/uploads/`;
-        let newUpload = '';
-        if(newPhoto === urlImage + oldPhoto){
-            newUpload = oldPhoto;
-        } else {
-            newUpload = newPhoto;
-        };
-
-        let result = {info:''};
-        console.log("new ",newUpload);
-        try{
-            result = await uploadReplaceImage(oldPhoto, newUpload, newPhoto);
-            console.log(result);
-        } catch(err){
-            console.log("Error : ", err);
-        };
-
-        const dataUpdate = {
-            images: result.info 
-        }
+    const getData = async () => {
+        await AsyncStorage.getItem(`loginKey`).then(
+            res => {
+                axios.get(`http://192.168.18.7:4000/users/mail/${res}`).then(
+                    result => {
+                        const results = result.data;
+                        setOldPhoto(results.fotoktp); setStatusKTP(results.statusktp);
+                        setStatusUser(results.statususer);
+                    }
+                )
+            }
+        )
     }
+
+    const uploadImage = async () => {
+        uploadReplaceImage(photo)
+
+        // const dataUpdate = {
+        //     images: result.info
+        // }
+    }
+
+    useEffect(() => {
+        getData();
+    }, [])
 
     return (
         <View>
@@ -68,24 +81,25 @@ const Verifikasi = (props) => {
                 </View>
                 <ScrollView>
                     <View style={styles.container}>
-                        <TouchableOpacity onPress={()=>selectImage()} style={{borderRadius:20}}>
+                        <TouchableOpacity onPress={() => selectImage()} style={{ borderRadius: 20 }}>
                             <View style={styles.containerKtp}>
                                 {
-                                    photo !== "" ? (
-                                        <Image source={{uri: oldphoto !== photo ? photo : `http://192.168.18.7:4000/resources/uploads/${oldphoto}`}} style={styles.imgSize2} />
-                                    ) : (
-                                        <Image source={ktp} style={styles.imgSize} />
-                                    )
+                                    photo && (
+                                        <Image source={{ uri: oldphoto !== photo ? photo : `http://192.168.18.7:4000/resources/uploads/${oldphoto}` }} style={styles.imgSize2} />
+                                    ) 
+                                    // : (
+                                    //     <Image source={ktp} style={styles.imgSize} />
+                                    // )
                                 }
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.btn1}>
-                            <Text style={styles.text1}>Verifikasi KTP</Text>
-                        </TouchableOpacity>
-                    </View>
-                </ScrollView>
+                        <TouchableOpacity style={statusKTP == 'verified' ? styles.btn2 : styles.btn1} disabled={statusKTP == 'verified' ? true : false} onPress={() => uploadImage()}>
+                        <Text style={styles.text1}>{statusKTP == 'verified' ? "Verified" : "Verifikasi KTP"}</Text>
+                    </TouchableOpacity>
             </View>
-        </View>
+        </ScrollView>
+            </View >
+        </View >
     );
 }
 
@@ -103,7 +117,7 @@ const styles = StyleSheet.create({
     imgSize2: {
         height: normalize(180),
         width: normalize(300),
-        borderRadius:20
+        borderRadius: 20
     },
     header: {
         height: normalize(50),
@@ -147,7 +161,7 @@ const styles = StyleSheet.create({
         fontFamily: "Quicksand-Bold",
         color: "#9724DE",
         fontSize: normalize(20),
-        textAlign:"center"
+        textAlign: "center"
     },
     text6: {
         fontFamily: "Quicksand-Bold",
@@ -167,13 +181,13 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     containerKtp: {
-        width:normalize(350),
-        height:normalize(200),
-        borderRadius:20,
-        justifyContent:"center",
-        alignItems:"center",
-        borderWidth:1,
-        borderColor:"#9724DE"
+        width: normalize(350),
+        height: normalize(200),
+        borderRadius: 20,
+        justifyContent: "center",
+        alignItems: "center",
+        borderWidth: 1,
+        borderColor: "#9724DE"
     },
     container3: {
         paddingLeft: normalize(10),
@@ -192,6 +206,16 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         marginTop: normalize(20)
+    },
+    btn2: {
+        width: normalize(350),
+        height: normalize(40),
+        backgroundColor: "#9724DE50",
+        borderRadius: 20,
+        borderColor: "#808080",
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: normalize(20),
     },
     lining: {
         marginTop: normalize(10),
