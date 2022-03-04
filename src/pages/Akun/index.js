@@ -4,16 +4,72 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Image, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Icon } from 'react-native-elements';
+import ImageCropPicker from 'react-native-image-crop-picker';
 import normalize from 'react-native-normalize';
 
 const Akun = (props) => {
     const [selectedLanguage, setSelectedLanguage] = useState();
     const [nama, setNama] = useState('');
+    const [idUser, setIdUser] = useState('');
     const [email, setEmail] = useState('');
     const [nohp, setNohp] = useState('');
     const [photo, setPhoto] = useState('');
     const [alamat, setAlamat] = useState('');
     const [pekerjaan, setPekerjaan] = useState('');
+
+    const [cPhoto, setCPhoto] = useState('');
+
+
+    const selectImage = () => {
+        ImageCropPicker.openPicker({
+            width: normalize(150),
+            height: normalize(150),
+            cropping: true,
+            cropperCircleOverlay: true,
+        }).then(image => {
+            if (!image) {
+                console.log("Cancel Image Picker")
+            } else {
+                console.log(image);
+                setCPhoto(image);
+                uploadImage();
+            }
+        })
+    }
+
+    const uploadImage = async () => {
+        const newName =  cPhoto.path
+
+        let photoss = {
+            name: newName,
+            type: cPhoto.mime,
+            uri: cPhoto.path
+        }
+
+
+        let formData = new FormData();
+        formData.append("images", photoss)
+
+        let result = { info: "" }
+        result = await fetch(`http://192.168.18.7:4000/upload/`, {
+            method: "POST",
+            body: formData
+        }).then(
+            res => res.json().then(
+                response => { console.log(response); return response; }
+            )
+        )
+        console.log(result.info)
+        const dataUpdate = {
+            foto: result.info,
+        }
+        axios.put(`http://192.168.18.7:4000/users/${idUser}`, dataUpdate).then(
+            res => {
+                console.log("Sukses Update")
+            }
+        )
+
+    }
 
     const getDataUser = async () => {
         await AsyncStorage.getItem("loginKey").then(
@@ -24,7 +80,7 @@ const Akun = (props) => {
                         setAlamat(results.alamat); setNama(results.nama);
                         setEmail(results.email); setNohp(results.nohp);
                         setPekerjaan(results.pekerjaan); setPhoto(results.foto)
-                        console.log(results);
+                        console.log(results); setIdUser(results._id)
                     }
                 )
             }
@@ -51,9 +107,9 @@ const Akun = (props) => {
         setPekerjaan(e);
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         getDataUser();
-    },[])
+    }, [])
     return (
         <View>
             <StatusBar animated backgroundColor={"#9724DE"} barStyle={'light-content'} />
@@ -67,32 +123,35 @@ const Akun = (props) => {
 
                 <ScrollView>
                     <View style={styles.container}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={selectImage}>
                             <View style={styles.imgContainer}>
                                 {
                                     photo ? (
-                                        <Image source={{uri: `http://192.168.18.7:4000/resources/uploads/${photo}`}} />
-                                    ) : (
-                                        <Icon type='font-awesome' name='user' size={normalize(100)} color={"#808080"}/>
-                                    )
+                                        <Image source={{ uri: `http://192.168.18.7:4000/resources/uploads/${photo}` }} style={styles.imgSize2} />
+                                    ) :
+                                        cPhoto.path ? cPhoto.path && (
+                                            <Image source={{ uri: cPhoto.path }} style={styles.imgSize2} />
+                                        ) : (
+                                            <Icon type='font-awesome' name='user' size={normalize(100)} color={"#808080"} />
+                                        )
                                 }
                             </View>
                         </TouchableOpacity>
 
                         <View style={styles.tube}>
-                            <TextInput placeholder='Nama Lengkap' onChangeText={changeOn} value={nama} style={{color:"black"}} />
+                            <TextInput placeholder='Nama Lengkap' onChangeText={changeOn} value={nama} style={{ color: "black" }} />
                         </View>
                         <View style={styles.tube}>
-                            <TextInput placeholder='Email' onChangeText={changeOnEmail} value={email} style={{color:"black"}} />
+                            <TextInput placeholder='Email' onChangeText={changeOnEmail} value={email} style={{ color: "black" }} />
                         </View>
                         <View style={styles.tube}>
-                            <TextInput placeholder='No Handphone' onChangeText={changeOnPhone} keyboardType='phone-pad' value={nohp} maxLength={12} style={{color:"black"}} />
+                            <TextInput placeholder='No Handphone' onChangeText={changeOnPhone} keyboardType='phone-pad' value={nohp} maxLength={12} style={{ color: "black" }} />
                         </View>
                         <View style={styles.tube}>
-                            <TextInput placeholder='Alamat' maxLength={255} onChangeText={changeOnAlamat} value={alamat ? alamat : ''} placeholderTextColor={"#808080"} style={{color:"black"}} />
+                            <TextInput placeholder='Alamat' maxLength={255} onChangeText={changeOnAlamat} value={alamat ? alamat : ''} placeholderTextColor={"#808080"} style={{ color: "black" }} />
                         </View>
                         <View style={styles.tube}>
-                            <TextInput placeholder='Pekerjaan' onChangeText={changeOnPekerjaan} value={pekerjaan ? pekerjaan : ''} placeholderTextColor={"#808080"} style={{color:"black"}} />
+                            <TextInput placeholder='Pekerjaan' onChangeText={changeOnPekerjaan} value={pekerjaan ? pekerjaan : ''} placeholderTextColor={"#808080"} style={{ color: "black" }} />
                         </View>
 
                         <TouchableOpacity style={styles.tubeButton}>
@@ -120,6 +179,12 @@ const styles = StyleSheet.create({
         height: normalize(40),
         width: normalize(40)
     },
+    imgSize2: {
+        height: normalize(150),
+        width: normalize(150),
+        overflow: 'hidden',
+        borderRadius: 150
+    },
     header: {
         height: normalize(50),
         backgroundColor: "#9724DE",
@@ -143,8 +208,8 @@ const styles = StyleSheet.create({
         borderRadius: 150,
         borderWidth: 1,
         borderColor: "#dfdfdf",
-        justifyContent:"center",
-        alignItems:"center"
+        justifyContent: "center",
+        alignItems: "center"
     },
     container: {
         padding: normalize(20),
