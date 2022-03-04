@@ -1,29 +1,44 @@
 import axios from "axios";
 
-export const uploadReplaceImage = async (photos) => {
+export const uploadReplaceImage = async (oldFile, newFile, newName) => {
+  // Foto ada tapi tidak diubah
+  if (oldFile === newFile) {
+    return { info: newFile };
+  }
 
-    // Foto profil baru
-    // let fileName = `${newName.replace(/\s/g, "")}`;
-    // console.log("Hei : ",fileName)
-    let photo = {
-        uri: photos.uri,
-        type: photos.type,
-        name: photos.fileName,
-    };
-    console.log(photo)
-    // user formdata
-    let formData = new FormData();
+  // Kalau foto skrg undefined diubah jadi string kosong dulu
+  if (oldFile === undefined) {
+    oldFile = "";
+  }
 
-    formData.append("images", photo);
+  // Hapus foto lama
+  if (oldFile !== "") {
+    await axios.delete(`http://192.168.18.7:4000/delete/${oldFile}`);
+  }
 
-    const {data: dataImage} = await axios.post(`http://192.168.18.7:4000/upload`, formData).then(
-        res => {
-            console.log(res.data);
-            console.log(photo);
-        }
-    ).catch(err => {
-        console.log(err)
-        console.log("ver ",dataImage);
-    });
-    return dataImage;
-}
+  // Hapus foto profil
+  if (newFile === "") {
+    return { info: newFile };
+  }
+
+  // Foto profil baru
+  let fileName = `images_${newName.replace(/\s/g, "")}`;
+  let photo = {
+    uri: newFile,
+    type: "image/jpg",
+    name: fileName,
+  };
+
+  //use formdata
+  let formData = new FormData();
+  //append created photo{} to formdata
+  formData.append("images", photo);
+
+  const { data: dataImage } = await axios({
+    method: "POST",
+    url: `http://192.168.18.7:4000/upload`,
+    data: formData,
+  });
+
+  return dataImage;
+};

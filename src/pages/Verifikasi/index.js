@@ -11,12 +11,13 @@ import ImageCropPicker from 'react-native-image-crop-picker';
 import { uploadReplaceImage } from '../../utils';
 import { launchImageLibrary } from 'react-native-image-picker';
 
+
 const Verifikasi = (props) => {
     const [collect, setCollect] = useState([]);
-    const [key, setKey] = useState('');
+    const [photos, setPhotos] = useState(null);
 
     const [photo, setPhoto] = useState(null);
-    const [oldphoto, setOldPhoto] = useState('');
+    const [oldphoto, setOldPhoto] = useState(null);
     const [statusUser, setStatusUser] = useState('');
     const [statusKTP, setStatusKTP] = useState('');
 
@@ -24,20 +25,33 @@ const Verifikasi = (props) => {
     //     ImageCropPicker.openPicker({
     //         width: normalize(350),
     //         height: normalize(200),
-    //         cropping: true,
-    //         cropperCircleOverlay: false
+    //         cropping: true
     //     }).then(image => {
-    //         console.log(image);
+    //         console.log(image.path);
     //         setPhoto(image.path);
     //     })
     // }
 
     const selectImage = () => {
-        launchImageLibrary({noData: true}, (response) => {
-            if(response){
+        var options = {
+            title: "Select Image",
+            customButtons: [
+                {
+                    name: "customeOptionKey",
+                    title: "Choose file from Custom Option"
+                },
+            ],
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            }
+        }
+        launchImageLibrary(options, (response) => {
+            if (response) {
                 const anything = response.assets;
-                const arr = anything.map((e,i)=>e.uri);
-                console.log(arr[0])
+                const arr = anything.map((e, i) => e.uri);
+                console.log(response.assets[0])
+                setPhotos(anything[0])
                 setPhoto(arr[0])
             }
         })
@@ -58,11 +72,44 @@ const Verifikasi = (props) => {
     }
 
     const uploadImage = async () => {
-        uploadReplaceImage(photo)
-
-        // const dataUpdate = {
-        //     images: result.info
+        // console.log(photo);
+        // const newPhoto = photo;
+        // const oldPhoto = oldphoto;
+        // const urlImage = 'http://localhost:4000/resources/uploads/';
+        // let newUpload = '';
+        // if (newPhoto === urlImage + oldPhoto) {
+        //     newUpload = oldPhoto;
+        // } else {
+        //     newUpload = newPhoto;
         // }
+        let datas = {
+            name: photos.fileName,
+            type: photos.type,
+            uri: photos.uri
+        }
+
+
+        let data = new FormData();
+        data.append("files", datas)
+
+        let result = { info: "" }
+
+        try {
+            result = await fetch(`http://192.168.18.7:4000/upload/ktp`, {
+                method: "POST",
+                body: data
+            }).then(
+                res => {
+                    console.log(res.data)
+                }
+            ).catch((err) => {
+                console.log(err)
+            })
+        } catch (error) {
+            console.log(error.response.data)
+        }
+        console.log(result)
+
     }
 
     useEffect(() => {
@@ -84,20 +131,20 @@ const Verifikasi = (props) => {
                         <TouchableOpacity onPress={() => selectImage()} style={{ borderRadius: 20 }}>
                             <View style={styles.containerKtp}>
                                 {
-                                    photo && (
+                                    photo !== null ? photo && (
                                         <Image source={{ uri: oldphoto !== photo ? photo : `http://192.168.18.7:4000/resources/uploads/${oldphoto}` }} style={styles.imgSize2} />
-                                    ) 
-                                    // : (
-                                    //     <Image source={ktp} style={styles.imgSize} />
-                                    // )
+                                    )
+                                        : (
+                                            <Image source={ktp} style={styles.imgSize} />
+                                        )
                                 }
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity style={statusKTP == 'verified' ? styles.btn2 : styles.btn1} disabled={statusKTP == 'verified' ? true : false} onPress={() => uploadImage()}>
-                        <Text style={styles.text1}>{statusKTP == 'verified' ? "Verified" : "Verifikasi KTP"}</Text>
-                    </TouchableOpacity>
-            </View>
-        </ScrollView>
+                            <Text style={styles.text1}>{statusKTP == 'verified' ? "Verified" : "Verifikasi KTP"}</Text>
+                        </TouchableOpacity>
+                    </View>
+                </ScrollView>
             </View >
         </View >
     );
