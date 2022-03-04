@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, Modal, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import normalize from 'react-native-normalize';
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -8,6 +8,7 @@ import axios from 'axios';
 const Profil = (props) => {
     const [statusUser, setStatusUser] = useState('')
     const [nama, setNama] = useState('')
+    const [photo, setPhoto] = useState('')
     const [poin, setPoin] = useState(0)
 
     const getDataUser = async () => {
@@ -17,7 +18,7 @@ const Profil = (props) => {
                     result => {
                         const results = result.data;
                         setStatusUser(results.statususer); setNama(results.nama);
-                        setPoin(results.poin);
+                        setPoin(results.poin); setPhoto(results.foto)
                         console.log(results);
                     }
                 )
@@ -26,9 +27,9 @@ const Profil = (props) => {
     }
 
     const ajukanDonasi = () => {
-        if(statusUser == "not verified"){
+        if (statusUser == "not verified") {
             Alert.alert("Silahkan verifikasi data diri")
-        } else{
+        } else {
             Alert.alert("Ok")
         }
     }
@@ -39,9 +40,11 @@ const Profil = (props) => {
         console.log("Done Remove");
     }
 
-    useEffect(()=>{
+    const [modalVisible, setModalVisible] = useState(false);
+
+    useEffect(() => {
         getDataUser();
-    },[])
+    }, [])
     return (
         <View>
             <StatusBar animated backgroundColor={"#9724DE"} barStyle={'light-content'} />
@@ -52,8 +55,33 @@ const Profil = (props) => {
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={styles.container}>
                         <View style={{ flexDirection: "row" }}>
-                            <TouchableOpacity style={styles.imgContainer}>
-                                <Icon type='font-awesome' name='user' size={normalize(70)} color={"#808080"} />
+                            <Modal
+                                animationType='fade'
+                                transparent={true}
+                                visible={modalVisible}
+                                onRequestClose={() => {
+                                    Alert.alert("Closed");
+                                    setModalVisible(!modalVisible)
+                                }}
+                            >
+                                <View style={{ justifyContent: "center", alignItems: "center" }}>
+                                    <View style={styles.boxModal}>
+                                        <Image source={{ uri: `http://192.168.18.7:4000/resources/uploads/${photo}` }} style={styles.imgSize3} />
+                                        <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
+                                            <Text style={styles.text1}>Close</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+
+                            </Modal>
+                            <TouchableOpacity style={styles.imgContainer} onPress={() => setModalVisible(true)}>
+                                {
+                                    photo !== '' ? (
+                                        <Image source={{ uri: `http://192.168.18.7:4000/resources/uploads/${photo}` }} style={styles.imgSize2} />
+                                    ) : (
+                                        <Icon type='font-awesome' name='user' size={normalize(70)} color={"#808080"} />
+                                    )
+                                }
                             </TouchableOpacity>
 
                             <View style={styles.container2}>
@@ -68,37 +96,37 @@ const Profil = (props) => {
                     <View style={styles.lining} />
 
                     <View style={styles.container}>
-                        <TouchableOpacity style={{ flexDirection: "row" }} onPress={()=>props.navigation.navigate("verifikasi")}>
+                        <TouchableOpacity style={{ flexDirection: "row" }} onPress={() => props.navigation.navigate("verifikasi")}>
                             <Icon type='font-awesome-5' name='id-card' size={normalize(30)} color={"#9724DE"} />
                             <Text style={styles.text4}>Verifikasi Data Diri</Text>
                         </TouchableOpacity>
 
                         <View style={styles.lining2} />
-                        <TouchableOpacity style={{ flexDirection: "row" }} onPress={()=>ajukanDonasi()}>
+                        <TouchableOpacity style={{ flexDirection: "row" }} onPress={() => ajukanDonasi()}>
                             <Icon type='font-awesome-5' name='hand-holding-usd' size={normalize(30)} color={"#9724DE"} />
                             <Text style={styles.text4}>+ Buat Pengajuan Donasi</Text>
                         </TouchableOpacity>
 
                         <View style={styles.lining2} />
-                        <TouchableOpacity style={{ flexDirection: "row" }} onPress={()=>props.navigation.navigate("daftar-donasi")}>
+                        <TouchableOpacity style={{ flexDirection: "row" }} onPress={() => props.navigation.navigate("daftar-donasi")}>
                             <Icon type='font-awesome-5' name='book' size={normalize(30)} color={"#9724DE"} />
                             <Text style={styles.text4}>Daftar Donasimu</Text>
                         </TouchableOpacity>
 
                         <View style={styles.lining2} />
-                        <TouchableOpacity style={{ flexDirection: "row" }} onPress={()=>props.navigation.navigate("riwayat-donasi")}>
+                        <TouchableOpacity style={{ flexDirection: "row" }} onPress={() => props.navigation.navigate("riwayat-donasi")}>
                             <Icon type='font-awesome-5' name='history' size={normalize(30)} color={"#9724DE"} />
                             <Text style={styles.text4}>Riwayat Donasi</Text>
                         </TouchableOpacity>
 
                         <View style={styles.lining2} />
-                        <TouchableOpacity style={{ flexDirection: "row" }} onPress={()=>props.navigation.navigate("kotak-masuk")}>
+                        <TouchableOpacity style={{ flexDirection: "row" }} onPress={() => props.navigation.navigate("kotak-masuk")}>
                             <Icon type='font-awesome-5' name='envelope' size={normalize(30)} color={"#9724DE"} />
                             <Text style={styles.text4}>Kotak Masuk</Text>
                         </TouchableOpacity>
 
                         <View style={styles.lining2} />
-                        <TouchableOpacity style={{ flexDirection: "row" }} onPress={()=>props.navigation.navigate("bantuan")}>
+                        <TouchableOpacity style={{ flexDirection: "row" }} onPress={() => props.navigation.navigate("bantuan")}>
                             <Icon type='font-awesome-5' name='info-circle' size={normalize(30)} color={"#9724DE"} />
                             <Text style={styles.text4}>Bantuan</Text>
                         </TouchableOpacity>
@@ -125,9 +153,28 @@ const styles = StyleSheet.create({
         height: "100%",
         backgroundColor: "#fff"
     },
+    boxModal: {
+        width: '100%',
+        height: '100%',
+        backgroundColor: "black",
+        alignItems: "center",
+        justifyContent:"center"
+    },
     imgSize: {
         height: normalize(40),
         width: normalize(40)
+    },
+    imgSize2: {
+        height: normalize(120),
+        width: normalize(120),
+        borderRadius: 100,
+        overflow: "hidden"
+    },
+    imgSize3: {
+        height: normalize(300),
+        width: normalize(300),
+        borderRadius: 300,
+        overflow: "hidden"
     },
     header: {
         height: normalize(50),
@@ -164,8 +211,8 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         borderWidth: 1,
         borderColor: "#dfdfdf",
-        justifyContent:"center",
-        alignItems:"center"
+        justifyContent: "center",
+        alignItems: "center",
     },
     lining: {
         height: normalize(10),
@@ -179,7 +226,7 @@ const styles = StyleSheet.create({
         marginBottom: normalize(20)
     },
     container: {
-        padding: normalize(20)
+        padding: normalize(40)
     },
     container2: {
         paddingLeft: normalize(50),
@@ -192,6 +239,6 @@ const styles = StyleSheet.create({
         marginTop: normalize(10),
         justifyContent: "center",
         alignItems: "center",
-        width:normalize(150)
+        width: normalize(150)
     }
 })

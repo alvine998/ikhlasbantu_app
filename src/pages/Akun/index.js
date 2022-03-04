@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Picker } from '@react-native-picker/picker';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Image, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import normalize from 'react-native-normalize';
@@ -107,6 +107,22 @@ const Akun = (props) => {
         setPekerjaan(e);
     }
 
+    const updateAkun = () => {
+        const data = {
+            nama : nama,
+            email: email,
+            nohp: nohp,
+            alamat: alamat,
+            pekerjaan: pekerjaan
+        }
+        axios.put(`http://192.168.18.7:4000/users/${idUser}`, data).then(
+            res => {
+                console.log("sukses update akun");
+                Alert.alert("Berhasil Update Akun")
+            }
+        )
+    }
+
     useEffect(() => {
         getDataUser();
     }, [])
@@ -154,7 +170,7 @@ const Akun = (props) => {
                             <TextInput placeholder='Pekerjaan' onChangeText={changeOnPekerjaan} value={pekerjaan ? pekerjaan : ''} placeholderTextColor={"#808080"} style={{ color: "black" }} />
                         </View>
 
-                        <TouchableOpacity style={styles.tubeButton}>
+                        <TouchableOpacity style={styles.tubeButton} onPress={updateAkun}>
                             <Text style={styles.text1}>Simpan</Text>
                         </TouchableOpacity>
 
