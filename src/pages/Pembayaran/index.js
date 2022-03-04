@@ -9,6 +9,7 @@ import NumberFormat from 'react-number-format';
 import { muamalat, payment } from '../../assets';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import { uploadReplaceImage } from '../../utils';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 const Pembayaran = (props) => {
     const [collect, setCollect] = useState([]);
@@ -22,44 +23,88 @@ const Pembayaran = (props) => {
     const [nama, setNama] = useState('');
 
     const [photo, setPhoto] = useState('');
-    const [oldphoto, setOldPhoto] = useState('');
+    const [photos, setPhotos] = useState('');
 
     const selectImage = () => {
-        ImageCropPicker.openPicker({
-            width:normalize(150),
-            height:normalize(250),
-            cropping: true,
-            cropperCircleOverlay: false
-        }).then(image=>{
-            console.log(image.path);
-            setPhoto(image.path);
-            uploadImage();
+        var options = {
+            title: "Select Image",
+            customButtons: [
+                {
+                    name: "customeOptionKey",
+                    title: "Choose file from Custom Option"
+                },
+            ],
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            }
+        }
+        launchImageLibrary(options, (response) => {
+            if (response.didCancel) {
+                console.log("User cancel image picker")
+            } else {
+                const anything = response.assets;
+                const arr = anything.map((e, i) => e.uri);
+                console.log(response.assets[0])
+                setPhotos(anything[0])
+                setPhoto(arr[0])
+            }
         })
     }
 
-    const uploadImage = async () => {
-        console.log(photo);
-        const newPhoto = photo;
-        const oldPhoto = oldphoto;
-        const urlImage = `http://192.168.18.7:4000/resources/uploads/`;
-        let newUpload = '';
-        if(newPhoto === urlImage + oldPhoto){
-            newUpload = oldPhoto;
-        } else {
-            newUpload = newPhoto;
-        };
+    const getData = async () => {
+        await AsyncStorage.getItem(`loginKey`).then(
+            res => {
+                axios.get(`http://192.168.18.7:4000/users/mail/${res}`).then(
+                    result => {
+                        const results = result.data;
+                        setOldPhoto(results.fotoktp); setStatusKTP(results.statusktp);
+                        setStatusUser(results.statususer); setIdUser(results._id)
+                    }
+                )
+            }
+        )
+    }
 
-        let result = {info:''};
-        try{
-            result = await uploadReplaceImage(oldPhoto, newUpload, newPhoto);
-        } catch(err){
-            console.log("Error : ", err);
-        };
+    const uploadImage = async () => {
+        let photo = {
+            name: photos.fileName,
+            type: photos.type,
+            uri: photos.uri
+        }
+
+
+        let formData = new FormData();
+        formData.append("files", photo)
+
+        let result = { info: "" }
+
+        result = await fetch(`http://192.168.18.7:4000/upload/ktp`, {
+            method: "POST",
+            body: formData
+        }).then(
+            res => res.json().then(
+                response => { console.log(response); return response; }
+            )
+        )
+
+        console.log(result.info)
 
         const dataUpdate = {
-            images: result.info 
+            fotoktp: result.info,
+            statusktp: 'waiting'
         }
+
+        axios.put(`http://192.168.18.7:4000/users/${idUser}`, dataUpdate).then(
+            res => {
+                console.log("Sukses Update")
+            }
+        )
     }
+
+    useEffect(()=>{
+        getData();
+    },[])
 
     return (
         <View>
@@ -76,12 +121,12 @@ const Pembayaran = (props) => {
                         <Image source={muamalat} style={styles.imgSize2} />
                         <Text style={styles.text2}>No Rekening : (147) 3460006152 {"\n"}A.N{"\n"}Yayasan Semesta Bertasbih</Text>
                         <View style={styles.container}>
-                            <TouchableOpacity onPress={()=>selectImage()}>
+                            <TouchableOpacity onPress={() => selectImage()}>
                                 {
                                     photo == '' ? (
                                         <Image source={payment} style={styles.imgSize} />
                                     ) : (
-                                        <Image source={{uri: oldphoto !== photo ? photo : `http://192.168.18.7:4000/resources/uploads/${oldphoto}`}} style={styles.imgSize} />
+                                        <Image source={{ uri: oldphoto !== photo ? photo : `http://192.168.18.7:4000/resources/uploads/${oldphoto}` }} style={styles.imgSize} />
                                     )
                                 }
                                 {/* {
@@ -161,7 +206,7 @@ const styles = StyleSheet.create({
         fontFamily: "Quicksand-Bold",
         color: "#9724DE",
         fontSize: normalize(20),
-        textAlign:"center"
+        textAlign: "center"
     },
     text6: {
         fontFamily: "Quicksand-Bold",
