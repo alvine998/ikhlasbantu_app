@@ -20,6 +20,7 @@ const Verifikasi = (props) => {
     const [oldphoto, setOldPhoto] = useState(null);
     const [statusUser, setStatusUser] = useState('');
     const [statusKTP, setStatusKTP] = useState('');
+    const [idUser, setIdUser] = useState('');
 
     // const selectImage = () => {
     //     ImageCropPicker.openPicker({
@@ -47,7 +48,9 @@ const Verifikasi = (props) => {
             }
         }
         launchImageLibrary(options, (response) => {
-            if (response) {
+            if (response.didCancel) {
+                console.log("User cancel image picker")
+            } else {
                 const anything = response.assets;
                 const arr = anything.map((e, i) => e.uri);
                 console.log(response.assets[0])
@@ -64,7 +67,7 @@ const Verifikasi = (props) => {
                     result => {
                         const results = result.data;
                         setOldPhoto(results.fotoktp); setStatusKTP(results.statusktp);
-                        setStatusUser(results.statususer);
+                        setStatusUser(results.statususer); setIdUser(results._id)
                     }
                 )
             }
@@ -72,43 +75,40 @@ const Verifikasi = (props) => {
     }
 
     const uploadImage = async () => {
-        // console.log(photo);
-        // const newPhoto = photo;
-        // const oldPhoto = oldphoto;
-        // const urlImage = 'http://localhost:4000/resources/uploads/';
-        // let newUpload = '';
-        // if (newPhoto === urlImage + oldPhoto) {
-        //     newUpload = oldPhoto;
-        // } else {
-        //     newUpload = newPhoto;
-        // }
-        let datas = {
+
+        let photo = {
             name: photos.fileName,
             type: photos.type,
             uri: photos.uri
         }
 
 
-        let data = new FormData();
-        data.append("files", datas)
+        let formData = new FormData();
+        formData.append("files", photo)
 
         let result = { info: "" }
 
-        try {
-            result = await fetch(`http://192.168.18.7:4000/upload/ktp`, {
-                method: "POST",
-                body: data
-            }).then(
-                res => {
-                    console.log(res.data)
-                }
-            ).catch((err) => {
-                console.log(err)
-            })
-        } catch (error) {
-            console.log(error.response.data)
+        result = await fetch(`http://192.168.18.7:4000/upload/ktp`, {
+            method: "POST",
+            body: formData
+        }).then(
+            res => res.json().then(
+                response => { console.log(response); return response; }
+            )
+        )
+
+        console.log(result.info)
+
+        const dataUpdate = {
+            fotoktp: result.info,
+            statusktp: 'waiting'
         }
-        console.log(result)
+
+        axios.put(`http://192.168.18.7:4000/users/${idUser}`, dataUpdate).then(
+            res => {
+                console.log("Sukses Update")
+            }
+        )
 
     }
 
@@ -128,20 +128,23 @@ const Verifikasi = (props) => {
                 </View>
                 <ScrollView>
                     <View style={styles.container}>
-                        <TouchableOpacity onPress={() => selectImage()} style={{ borderRadius: 20 }}>
+                        <TouchableOpacity disabled={statusKTP == 'verified' ? true : statusKTP == 'waiting' ? true : false} onPress={() => selectImage()} style={{ borderRadius: 20 }}>
                             <View style={styles.containerKtp}>
                                 {
                                     photo !== null ? photo && (
-                                        <Image source={{ uri: oldphoto !== photo ? photo : `http://192.168.18.7:4000/resources/uploads/${oldphoto}` }} style={styles.imgSize2} />
+                                        <Image source={{ uri: photo }} style={styles.imgSize2} />
                                     )
-                                        : (
-                                            <Image source={ktp} style={styles.imgSize} />
-                                        )
+                                        : oldphoto !== null ? (
+                                            <Image source={{ uri: `http://192.168.18.7:4000/resources/uploads/${oldphoto}` }} style={styles.imgSize2} />
+                                        ) :
+                                            (
+                                                <Image source={ktp} style={styles.imgSize} />
+                                            )
                                 }
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity style={statusKTP == 'verified' ? styles.btn2 : styles.btn1} disabled={statusKTP == 'verified' ? true : false} onPress={() => uploadImage()}>
-                            <Text style={styles.text1}>{statusKTP == 'verified' ? "Verified" : "Verifikasi KTP"}</Text>
+                        <TouchableOpacity style={statusKTP == 'verified' ? styles.btn2 : statusKTP == 'waiting' ? styles.btn2 : styles.btn1} disabled={statusKTP == 'verified' ? true : statusKTP == 'waiting' ? true : false} onPress={() => uploadImage()}>
+                            <Text style={styles.text1}>{statusKTP == 'verified' ? "Verified" : statusKTP == 'waiting' ? "Tunggu Verifikasi" : "Verifikasi KTP"}</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
