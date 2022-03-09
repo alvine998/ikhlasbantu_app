@@ -10,6 +10,7 @@ const Profil = (props) => {
     const [nama, setNama] = useState('')
     const [photo, setPhoto] = useState('')
     const [poin, setPoin] = useState(0)
+    const [statusktp, setStatusktp] = useState('')
 
     const getDataUser = async () => {
         await AsyncStorage.getItem("loginKey").then(
@@ -19,7 +20,7 @@ const Profil = (props) => {
                         const results = result.data;
                         setStatusUser(results.statususer); setNama(results.nama);
                         setPoin(results.poin); setPhoto(results.foto)
-                        console.log(results);
+                        console.log(results); setStatusktp(results.statusktp)
                     }
                 )
             }
@@ -27,10 +28,10 @@ const Profil = (props) => {
     }
 
     const ajukanDonasi = () => {
-        if (statusUser == "not verified") {
+        if (statusktp == "not verified") {
             Alert.alert("Silahkan verifikasi data diri")
         } else {
-            Alert.alert("Ok")
+            props.navigation.navigate("pengajuan-donasi")
         }
     }
 

@@ -1,63 +1,233 @@
 import React, { useEffect } from 'react';
-import { Image, ImageBackground, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, ImageBackground, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import normalize from 'react-native-normalize';
 import { useState } from "react";
 import axios from 'axios';
 import NumberFormat from 'react-number-format';
+import { Icon } from 'react-native-elements';
 
 const Donasi = (props) => {
+    const [active, setActive] = useState(true);
+    const [active2, setActive2] = useState(false);
+    const [active3, setActive3] = useState(false);
+    const [active4, setActive4] = useState(false);
+    const [active5, setActive5] = useState(false);
+
+    const [collect5, setCollect5] = useState([]);
+    const getSemua = () => {
+        axios.get(`http://192.168.18.7:4000/donasis/valid/`).then(
+            res => {
+                const collect5 = res.data;
+                console.log("Ini Semua ", collect5);
+                setCollect5(collect5);
+            }
+        )
+    }
+
+    const Semua = () => {
+        return (
+            collect5.reverse().map((res, i) => (
+                <TouchableOpacity key={i} style={{ flexDirection: "row" }} onPress={() => sendDonasi(res._id)}>
+                    <Image source={{ uri: `http://192.168.18.7:4000/resources/uploads/${res.foto}` }} style={styles.imgSize2} />
+                    <View style={styles.container3}>
+                        <Text style={styles.text5}>{res.judul}</Text>
+                        <View style={styles.lining} />
+                        <View style={{ flexDirection: "row" }}>
+                            <View>
+                                <Text style={styles.text3}>Terkumpul</Text>
+                                <NumberFormat value={res.terkumpul} thousandSeparator displayType='text' prefix='Rp ' renderText={(value) => <Text style={styles.text3}>{value}</Text>} />
+                            </View>
+                            <View style={{ flex: 1 }}>
+                                <Text style={styles.text4}>Waktu</Text>
+                                <Text style={styles.text4}>{res.durasi} hari</Text>
+                            </View>
+                        </View>
+                    </View>
+                </TouchableOpacity>
+            ))
+        )
+    }
     const [collect, setCollect] = useState([]);
-    const [collect2, setCollect2] = useState([]);
-    const [collect3, setCollect3] = useState([]);
-    const [collect4, setCollect4] = useState([]);
-
-
     const getKesehatan = () => {
         axios.get(`http://192.168.18.7:4000/donasis/valid/kesehatan`).then(
             res => {
                 const collect = res.data;
-                console.log(collect);
+                console.log("Kesehatan ", collect);
                 setCollect(collect);
             }
         )
     }
-
+    const Kesehatan = () => {
+        return (
+            collect.reverse().map((res, i) => (
+                <TouchableOpacity key={i} style={{ flexDirection: "row" }} onPress={() => sendDonasi(res._id)}>
+                    <Image source={{ uri: `http://192.168.18.7:4000/resources/uploads/${res.foto}` }} style={styles.imgSize2} />
+                    <View style={styles.container3}>
+                        <Text style={styles.text5}>{res.judul}</Text>
+                        <View style={styles.lining} />
+                        <View style={{ flexDirection: "row" }}>
+                            <View>
+                                <Text style={styles.text3}>Terkumpul</Text>
+                                <NumberFormat value={res.terkumpul} thousandSeparator displayType='text' prefix='Rp ' renderText={(value) => <Text style={styles.text3}>{value}</Text>} />
+                            </View>
+                            <View style={{ flex: 1 }}>
+                                <Text style={styles.text4}>Waktu</Text>
+                                <Text style={styles.text4}>{res.durasi} hari</Text>
+                            </View>
+                        </View>
+                    </View>
+                </TouchableOpacity>
+            ))
+        )
+    }
+    const [collect2, setCollect2] = useState([]);
     const getBencana = () => {
         axios.get(`http://192.168.18.7:4000/donasis/valid/bencana`).then(
             res => {
                 const collect2 = res.data;
-                console.log(collect2);
+                console.log("Bencana ", collect2);
                 setCollect2(collect2);
             }
         )
     }
-
+    const Bencana = () => {
+        return (
+            collect2.reverse().map((res, i) => (
+                <TouchableOpacity key={i} style={{ flexDirection: "row" }} onPress={() => sendDonasi(res._id)}>
+                    <Image source={{ uri: `http://192.168.18.7:4000/resources/uploads/${res.foto}` }} style={styles.imgSize2} />
+                    <View style={styles.container3}>
+                        <Text style={styles.text5}>{res.judul}</Text>
+                        <View style={styles.lining} />
+                        <View style={{ flexDirection: "row" }}>
+                            <View>
+                                <Text style={styles.text3}>Terkumpul</Text>
+                                <NumberFormat value={res.terkumpul} thousandSeparator displayType='text' prefix='Rp ' renderText={(value) => <Text style={styles.text3}>{value}</Text>} />
+                            </View>
+                            <View style={{ flex: 1 }}>
+                                <Text style={styles.text4}>Waktu</Text>
+                                <Text style={styles.text4}>{res.durasi} hari</Text>
+                            </View>
+                        </View>
+                    </View>
+                </TouchableOpacity>
+            ))
+        )
+    }
+    const [collect3, setCollect3] = useState([]);
     const getSedekah = () => {
         axios.get(`http://192.168.18.7:4000/donasis/valid/sedekah`).then(
             res => {
                 const collect3 = res.data;
-                console.log(collect3);
+                console.log("Sedekah ", collect3);
                 setCollect3(collect3);
             }
         )
     }
-
+    const Sedekah = () => {
+        return (
+            collect3.reverse().map((res, i) => (
+                <TouchableOpacity key={i} style={{ flexDirection: "row" }} onPress={() => sendDonasi(res._id)}>
+                    <Image source={{ uri: `http://192.168.18.7:4000/resources/uploads/${res.foto}` }} style={styles.imgSize2} />
+                    <View style={styles.container3}>
+                        <Text style={styles.text5}>{res.judul}</Text>
+                        <View style={styles.lining} />
+                        <View style={{ flexDirection: "row" }}>
+                            <View>
+                                <Text style={styles.text3}>Terkumpul</Text>
+                                <NumberFormat value={res.terkumpul} thousandSeparator displayType='text' prefix='Rp ' renderText={(value) => <Text style={styles.text3}>{value}</Text>} />
+                            </View>
+                            <View style={{ flex: 1 }}>
+                                <Text style={styles.text4}>Waktu</Text>
+                                <Text style={styles.text4}>{res.durasi} hari</Text>
+                            </View>
+                        </View>
+                    </View>
+                </TouchableOpacity>
+            ))
+        )
+    }
+    const [collect4, setCollect4] = useState([]);
     const getLainlain = () => {
         axios.get(`http://192.168.18.7:4000/donasis/valid/lain-lain`).then(
             res => {
                 const collect4 = res.data;
-                console.log(collect4);
+                console.log("Ini Lainlain ", collect4);
                 setCollect4(collect4);
             }
         )
     }
+    const Lainlain = () => {
+        return (
+            collect4.reverse().map((res, i) => (
+                <TouchableOpacity key={i} style={{ flexDirection: "row" }} onPress={() => sendDonasi(res._id)}>
+                    <Image source={{ uri: `http://192.168.18.7:4000/resources/uploads/${res.foto}` }} style={styles.imgSize2} />
+                    <View style={styles.container3}>
+                        <Text style={styles.text5}>{res.judul}</Text>
+                        <View style={styles.lining} />
+                        <View style={{ flexDirection: "row" }}>
+                            <View>
+                                <Text style={styles.text3}>Terkumpul</Text>
+                                <NumberFormat value={res.terkumpul} thousandSeparator displayType='text' prefix='Rp ' renderText={(value) => <Text style={styles.text3}>{value}</Text>} />
+                            </View>
+                            <View style={{ flex: 1 }}>
+                                <Text style={styles.text4}>Waktu</Text>
+                                <Text style={styles.text4}>{res.durasi} hari</Text>
+                            </View>
+                        </View>
+                    </View>
+                </TouchableOpacity>
+            ))
+        )
+    }
+
+    const atAll = () => {
+        setActive(true);
+        setActive2(false);
+        setActive3(false);
+        setActive4(false);
+        setActive5(false);
+    }
+
+    const atKes = () => {
+        setActive2(true);
+        setActive(false);
+        setActive3(false);
+        setActive4(false);
+        setActive5(false);
+    }
+
+    const atBen = () => {
+        setActive3(true);
+        setActive(false);
+        setActive2(false);
+        setActive4(false);
+        setActive5(false);
+    }
+
+    const atSed = () => {
+        setActive4(true);
+        setActive(false);
+        setActive3(false);
+        setActive2(false);
+        setActive5(false);
+    }
+
+    const atLain = () => {
+        setActive5(true);
+        setActive(false);
+        setActive3(false);
+        setActive2(false);
+        setActive4(false);
+    }
 
     useEffect(() => {
+        getSemua();
         getKesehatan();
         getBencana();
         getSedekah();
         getLainlain();
     }, [])
+
     return (
         <View>
             <StatusBar animated backgroundColor={"#9724DE"} barStyle={'light-content'} />
@@ -65,130 +235,60 @@ const Donasi = (props) => {
                 <View style={styles.header}>
                     <Text style={styles.text1}>Donasi</Text>
                 </View>
+                <View style={styles.filtering}>
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false} >
+                        <View style={{ flexDirection: "row" }}>
+
+                            <TouchableOpacity onPress={() => atAll()} style={styles.box1}>
+                                <Text style={styles.text2}>Semua</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={() => atKes()} style={styles.box2}>
+                                <Text style={styles.text2}>Kesehatan</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={() => atBen()} style={styles.box3}>
+                                <Text style={styles.text2}>Bencana Alam</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={() => atSed()} style={styles.box2}>
+                                <Text style={styles.text2}>Sedekah</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={() => atLain()} style={styles.box2}>
+                                <Text style={styles.text2}>Lain-lain</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                    </ScrollView>
+                </View>
 
                 <ScrollView>
-                    {/* Donasi Kesehatan */}
-                    <View style={{ paddingTop: normalize(20) }}>
-                        <View style={styles.container}>
-                            <Text style={styles.text2}>Donasi Kesehatan</Text>
-                        </View>
-                        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                            <View style={styles.rowing}>
-                                {
-                                    collect && collect.map((res, i) => (
-                                        <TouchableOpacity key={i}>
-                                            <View style={styles.imgDonasi}>
-                                                <ImageBackground source={{ uri: `http://192.168.18.7:4000/resources/uploads/${res.foto}` }} style={styles.imgSize2} >
-                                                    <View style={{padding:normalize(20)}}>
-                                                        <Text style={styles.text4}>{res.judul}</Text>
-                                                        <NumberFormat value={res.terkumpul} thousandSeparator displayType='text' prefix='Rp ' renderText={(value)=><Text style={styles.text4} >{value}</Text>} />
-                                                    </View>
-                                                </ImageBackground>
-                                            </View>
-                                        </TouchableOpacity>
-                                    ))
-                                }
 
-                                <TouchableOpacity onPress={() => props.navigation.navigate("donasi-kesehatan")}>
-                                    <View style={styles.imgDonasi2}>
-                                        <Text style={styles.text3}>+ Lihat Lainnya</Text>
-                                    </View>
-                                </TouchableOpacity>
-                            </View>
-                        </ScrollView>
-                    </View>
-
-                    {/* Donasi Bencana Alam */}
-                    <View style={{ paddingTop: normalize(20) }}>
-                        <View style={styles.container}>
-                            <Text style={styles.text2}>Donasi Bencana Alam</Text>
-                        </View>
-                        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                            <View style={styles.rowing}>
-                                {
-                                    collect2 && collect2.map((res, i) => (
-                                        <TouchableOpacity key={i}>
-                                            <View style={styles.imgDonasi}>
-                                                <ImageBackground source={{ uri: `http://192.168.18.7:4000/resources/uploads/${res.foto}` }} style={styles.imgSize2} >
-                                                    <View style={{padding:normalize(20)}}>
-                                                        <Text style={styles.text4}>{res.judul}</Text>
-                                                        <NumberFormat value={res.terkumpul} thousandSeparator displayType='text' prefix='Rp ' renderText={(value)=><Text style={styles.text4} >{value}</Text>} />
-                                                    </View>
-                                                </ImageBackground>
-                                            </View>
-                                        </TouchableOpacity>
-                                    ))
-                                }
-
+                    <View style={styles.container}>
+                        <View>
+                            <View style={styles.search}>
+                                <TextInput placeholder='Cari donasi disini' placeholderTextColor={"#808080"} style={{ width: normalize(300), height: normalize(50) }} />
                                 <TouchableOpacity>
-                                    <View style={styles.imgDonasi2}>
-                                        <Text style={styles.text3}>+ Lihat Lainnya</Text>
-                                    </View>
+                                    <Icon type='font-awesome' name='search' />
                                 </TouchableOpacity>
                             </View>
-                        </ScrollView>
-                    </View>
-
-                    {/* Donasi Sedekah Spesial */}
-                    <View style={{ paddingTop: normalize(20), paddingBottom: normalize(30) }}>
-                        <View style={styles.container}>
-                            <Text style={styles.text2}>Donasi Sedekah Spesial</Text>
                         </View>
-                        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                            <View style={styles.rowing}>
-                                {
-                                    collect3 && collect3.map((res, i) => (
-                                        <TouchableOpacity key={i}>
-                                            <View style={styles.imgDonasi}>
-                                                <ImageBackground source={{ uri: `http://192.168.18.7:4000/resources/uploads/${res.foto}` }} style={styles.imgSize2} >
-                                                    <View style={{padding:normalize(20)}}>
-                                                        <Text style={styles.text4}>{res.judul}</Text>
-                                                        <NumberFormat value={res.terkumpul} thousandSeparator displayType='text' prefix='Rp ' renderText={(value)=><Text style={styles.text4} >{value}</Text>} />
-                                                    </View>
-                                                </ImageBackground>
-                                            </View>
-                                        </TouchableOpacity>
-                                    ))
-                                }
-
-                                <TouchableOpacity>
-                                    <View style={styles.imgDonasi2}>
-                                        <Text style={styles.text3}>+ Lihat Lainnya</Text>
-                                    </View>
-                                </TouchableOpacity>
-                            </View>
-                        </ScrollView>
-                    </View>
-
-                    {/* Donasi Lainnya */}
-                    <View style={{ paddingTop: normalize(20), paddingBottom: normalize(30) }}>
-                        <View style={styles.container}>
-                            <Text style={styles.text2}>Donasi Lainnya</Text>
-                        </View>
-                        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                            <View style={styles.rowing}>
-                                {
-                                    collect4 && collect4.map((res, i) => (
-                                        <TouchableOpacity key={i}>
-                                            <View style={styles.imgDonasi}>
-                                                <ImageBackground source={{ uri: `http://192.168.18.7:4000/resources/uploads/${res.foto}` }} style={styles.imgSize2} >
-                                                    <View style={{padding:normalize(20)}}>
-                                                        <Text style={styles.text4}>{res.judul}</Text>
-                                                        <NumberFormat value={res.terkumpul} thousandSeparator displayType='text' prefix='Rp ' renderText={(value)=><Text style={styles.text4} >{value}</Text>} />
-                                                    </View>
-                                                </ImageBackground>
-                                            </View>
-                                        </TouchableOpacity>
-                                    ))
-                                }
-
-                                <TouchableOpacity>
-                                    <View style={styles.imgDonasi2}>
-                                        <Text style={styles.text3}>+ Lihat Lainnya</Text>
-                                    </View>
-                                </TouchableOpacity>
-                            </View>
-                        </ScrollView>
+                        {
+                            active == true ? (
+                                Semua()
+                            ) : active2 == true ? (
+                                Kesehatan()
+                            ) : active3 == true ? (
+                                Bencana()
+                            ) : active4 == true ? (
+                                Sedekah()
+                            ) : active5 == true ? (
+                                Lainlain()
+                            ) : (
+                                Alert.alert("Error")
+                            )
+                        }
                     </View>
                 </ScrollView>
             </View>
@@ -204,8 +304,16 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff"
     },
     imgSize: {
-        height: normalize(40),
-        width: normalize(40)
+        height: normalize(200),
+        width: normalize(200)
+    },
+    imgSize2: {
+        height: normalize(150),
+        width: normalize(150),
+        borderWidth: 1,
+        marginTop: normalize(20),
+        borderRadius: normalize(20),
+        marginLeft: normalize(20)
     },
     header: {
         height: normalize(50),
@@ -226,39 +334,19 @@ const styles = StyleSheet.create({
     },
     text3: {
         fontFamily: "Quicksand-Bold",
-        color: "#808080",
-        fontSize: normalize(18),
+        color: "black",
+        fontSize: normalize(14),
     },
     text4: {
-        fontFamily: "Quicksand-Regular",
+        fontFamily: "Quicksand-Bold",
         color: "black",
-        fontSize: normalize(18),
+        fontSize: normalize(14),
+        textAlign: "right"
     },
-    imgDonasi: {
-        width: normalize(300),
-        height: normalize(250),
-        borderWidth: 1,
-        borderRadius: 10,
-        marginLeft: normalize(20),
-        alignItems: "center",
-        borderColor:"#dfdfdf",
-        overflow:"hidden"
-    },
-    imgDonasi2: {
-        width: normalize(300),
-        height: normalize(250),
-        borderWidth: 1,
-        borderRadius: 10,
-        marginLeft: normalize(20),
-        justifyContent: "center",
-        alignItems: "center"
-    },
-    imgSize2: {
-        width: normalize(300),
-        height: normalize(250),
-        borderRadius: 10,
-        alignItems:"center",
-        justifyContent:"flex-end"
+    text5: {
+        fontFamily: "Quicksand-Bold",
+        color: "#9724DE",
+        fontSize: normalize(16),
     },
     rowing: {
         alignItems: "center",
@@ -268,7 +356,75 @@ const styles = StyleSheet.create({
         marginRight: normalize(20)
     },
     container: {
+        padding: normalize(20),
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: normalize(0)
+    },
+    container2: {
+        flexDirection: "row",
+    },
+    container3: {
+        padding: normalize(20),
+        width: normalize(200),
+        height: normalize(150),
+        justifyContent: "center",
+    },
+    search: {
+        width: normalize(350),
+        height: normalize(40),
+        borderWidth: 1,
+        borderRadius: 20,
+        borderColor: "#808080",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "row"
+    },
+    lining: {
+        marginTop: normalize(10),
+        height: normalize(3),
+        borderWidth: 1,
+        borderColor: "#808080",
+        marginBottom: normalize(10)
+    },
+    filtering: {
+        width: '100%',
+        height: normalize(60),
+        backgroundColor: "#dfdfdf",
+        paddingTop: normalize(15),
         paddingLeft: normalize(20),
         paddingRight: normalize(20)
+    },
+    box1: {
+        width: normalize(100),
+        height: normalize(35),
+        borderWidth: 1,
+        borderColor: "white",
+        borderRadius: 20,
+        paddingLeft: normalize(20),
+        paddingRight: normalize(20),
+        alignItems: "center",
+    },
+    box2: {
+        width: normalize(150),
+        height: normalize(35),
+        borderWidth: 1,
+        borderColor: "white",
+        borderRadius: 20,
+        paddingLeft: normalize(20),
+        paddingRight: normalize(20),
+        alignItems: "center",
+        marginLeft: normalize(20)
+    },
+    box3: {
+        width: normalize(200),
+        height: normalize(35),
+        borderWidth: 1,
+        borderColor: "white",
+        borderRadius: 20,
+        paddingLeft: normalize(20),
+        paddingRight: normalize(20),
+        alignItems: "center",
+        marginLeft: normalize(20)
     }
 })

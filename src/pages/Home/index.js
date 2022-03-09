@@ -29,6 +29,9 @@ const Home = (props) => {
                 console.log(res.data);
                 const collect = res.data;
                 setCollect(collect);
+                setImages(
+                    collect.map(res => `http://192.168.18.7:4000/resources/uploads/${res.gambar}`)
+                )
                 console.log(collect.map(res => res.gambar))
             }
         )
@@ -66,7 +69,7 @@ const Home = (props) => {
                         <Text style={styles.text1}>IKHLAS BANTU</Text>
                     </View>
                     <View style={styles.container1}>
-                        <SliderBox autoplay circleLoop images={carouselItems} style={{ height: normalize(200), borderRadius: 10, width: normalize(340) }} resizeMethod={"resize"} resizeMode={"cover"} />
+                        <SliderBox autoplay circleLoop images={images} style={{ height: normalize(200), borderRadius: 10, width: normalize(340) }} resizeMode={"cover"} />
                     </View>
 
                     <View style={styles.lining} />
