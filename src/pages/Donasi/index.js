@@ -262,18 +262,16 @@ const Donasi = (props) => {
 
                     </ScrollView>
                 </View>
-
+                <View style={styles.container}>
+                    <View style={styles.search}>
+                        <TextInput placeholder='Cari donasi disini' placeholderTextColor={"#808080"} style={{ width: normalize(300), height: normalize(50) }} />
+                        <TouchableOpacity>
+                            <Icon type='font-awesome' name='search' />
+                        </TouchableOpacity>
+                    </View>
+                </View>
                 <ScrollView>
-
                     <View style={styles.container}>
-                        <View>
-                            <View style={styles.search}>
-                                <TextInput placeholder='Cari donasi disini' placeholderTextColor={"#808080"} style={{ width: normalize(300), height: normalize(50) }} />
-                                <TouchableOpacity>
-                                    <Icon type='font-awesome' name='search' />
-                                </TouchableOpacity>
-                            </View>
-                        </View>
                         {
                             active == true ? (
                                 Semua()
