@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Image, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Image, Modal, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import normalize from 'react-native-normalize';
 import { SliderBox } from 'react-native-image-slider-box';
@@ -17,14 +17,14 @@ const DetailDonasi = (props) => {
     const [foto, setFoto] = useState(null);
     const [len, setLen] = useState([]);
     const [nama, setNama] = useState('');
-
+    const [hasil, setHasil] = useState(0);
 
     const getDonasi = async () => {
         await AsyncStorage.getItem("donasiKey").then(
             res => {
                 console.log(res)
                 setKey(res)
-                
+
                 axios.get(`http://192.168.18.7:4000/transaksi/donasi/${res}`).then(
                     res => {
                         const id = res.data;
@@ -44,6 +44,11 @@ const DetailDonasi = (props) => {
                             console.log(e.nama)
                             setNama(e.nama);
                         })
+                        let result = (collect.terkumpul / collect.target) * 100
+                        setHasil(
+                            result
+                        )
+                        console.log("Ini Collect ", result)
                     }
                 )
             }
@@ -60,11 +65,15 @@ const DetailDonasi = (props) => {
         getDonasi();
     }, [])
 
+    const [modalVisible, setModalVisible] = useState(false);
+
+
     return (
         <View>
             <StatusBar animated backgroundColor={"#9724DE"} barStyle={'light-content'} />
             <View style={styles.background}>
                 <View style={styles.header}>
+
                     <TouchableOpacity style={{ paddingRight: normalize(20) }} onPress={() => removeKey()}>
                         <Icon type='font-awesome' name='arrow-left' color={"#fff"} size={normalize(20)} />
                     </TouchableOpacity>
@@ -72,7 +81,25 @@ const DetailDonasi = (props) => {
                 </View>
                 <ScrollView>
                     <View style={styles.container}>
-                        <TouchableOpacity>
+                        <Modal
+                            animationType='fade'
+                            transparent={true}
+                            visible={modalVisible}
+                            onRequestClose={() => {
+                                Alert.alert("Closed");
+                                setModalVisible(!modalVisible)
+                            }}
+                        >
+                            <View style={{ justifyContent: "center", alignItems: "center" }}>
+                                <View style={styles.boxModal}>
+                                    <Image source={{ uri: `http://192.168.18.7:4000/resources/uploads/${foto}` }} style={styles.imgSize3} />
+                                    <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
+                                        <Text style={styles.text1}>Close</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </Modal>
+                        <TouchableOpacity onPress={() => setModalVisible(true)}>
                             <Image source={{ uri: `http://192.168.18.7:4000/resources/uploads/${foto}` }} style={styles.imgSize2} />
                         </TouchableOpacity>
                     </View>
@@ -83,9 +110,17 @@ const DetailDonasi = (props) => {
                         <View style={styles.container4}>
                             <NumberFormat value={terkumpul} thousandSeparator displayType='text' prefix='Rp ' renderText={(value) => <Text style={styles.text5} >{value}</Text>} />
                             <View style={styles.lining2}>
-                                {/* <View style={styles.lining3}>
+                                <View style={{
+                                    height: normalize(10),
+                                    borderWidth: 1,
+                                    borderColor: "#9724DE",
+                                    marginBottom: normalize(10),
+                                    borderRadius: 20,
+                                    width: `${hasil}%`,
+                                    backgroundColor: "#9724DE",
+                                }}>
 
-                                </View> */}
+                                </View>
                             </View>
                             <View style={{ flexDirection: "row" }}>
                                 <Text style={styles.text6}>Donasi ({len.length})</Text>
@@ -125,12 +160,25 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: normalize(20),
     },
+    imgSize3: {
+        height: normalize(300),
+        width: normalize(300),
+        borderRadius: 20,
+        overflow: "hidden"
+    },
     header: {
         height: normalize(50),
         backgroundColor: "#9724DE",
         flexDirection: "row",
         alignItems: "center",
         paddingLeft: normalize(20),
+    },
+    boxModal: {
+        width: '100%',
+        height: '100%',
+        backgroundColor: "black",
+        alignItems: "center",
+        justifyContent: "center"
     },
     banner: {
         height: normalize(150),
@@ -222,14 +270,13 @@ const styles = StyleSheet.create({
         backgroundColor: "#808080"
     },
     lining3: {
-        marginTop: normalize(10),
-        height: normalize(10),
-        borderWidth: 1,
-        borderColor: "#9724DE",
-        marginBottom: normalize(10),
-        borderRadius: 20,
-        width: "100%",
-        backgroundColor: "#9724DE",
+        // height: normalize(10),
+        // borderWidth: 1,
+        // borderColor: "#9724DE",
+        // marginBottom: normalize(10),
+        // borderRadius: 20,
+        // width: `${hasil}%`,
+        // backgroundColor: "#9724DE",
     },
     slider: {
         height: normalize(200),

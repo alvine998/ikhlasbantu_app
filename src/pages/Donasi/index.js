@@ -5,6 +5,7 @@ import { useState } from "react";
 import axios from 'axios';
 import NumberFormat from 'react-number-format';
 import { Icon } from 'react-native-elements';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Donasi = (props) => {
     const [active, setActive] = useState(true);
@@ -12,6 +13,13 @@ const Donasi = (props) => {
     const [active3, setActive3] = useState(false);
     const [active4, setActive4] = useState(false);
     const [active5, setActive5] = useState(false);
+
+    
+    const sendDonasi = async (id) => {
+        await AsyncStorage.setItem("donasiKey",id);
+        props.navigation.navigate("detail-donasi");
+        console.log("ID : ", id)
+    }
 
     const [collect5, setCollect5] = useState([]);
     const getSemua = () => {
