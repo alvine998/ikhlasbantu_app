@@ -21,6 +21,7 @@ const Pembayaran = (props) => {
     const [foto, setFoto] = useState(null);
     const [len, setLen] = useState([]);
     const [nama, setNama] = useState('');
+    const [idUser, setIdUser] = useState('');
 
     const [photo, setPhoto] = useState('');
     const [photos, setPhotos] = useState('');
@@ -58,8 +59,7 @@ const Pembayaran = (props) => {
                 axios.get(`http://192.168.18.7:4000/users/mail/${res}`).then(
                     result => {
                         const results = result.data;
-                        setOldPhoto(results.fotoktp); setStatusKTP(results.statusktp);
-                        setStatusUser(results.statususer); setIdUser(results._id)
+                        setIdUser(results._id);
                     }
                 )
             }
@@ -72,7 +72,6 @@ const Pembayaran = (props) => {
             type: photos.type,
             uri: photos.uri
         }
-
 
         let formData = new FormData();
         formData.append("files", photo)
@@ -91,11 +90,14 @@ const Pembayaran = (props) => {
         console.log(result.info)
 
         const dataUpdate = {
-            fotoktp: result.info,
-            statusktp: 'waiting'
+            foto: result.info,
+            status_transaksi: 'waiting'
+        }
+        const dataUpdate2 = {
+            status_transaksi: 'waiting'
         }
 
-        axios.put(`http://192.168.18.7:4000/users/${idUser}`, dataUpdate).then(
+        axios.put(`http://192.168.18.7:4000/transaksi/user/${idUser}`, foto ? dataUpdate : dataUpdate2).then(
             res => {
                 console.log("Sukses Update")
             }
@@ -126,7 +128,7 @@ const Pembayaran = (props) => {
                                     photo == '' ? (
                                         <Image source={payment} style={styles.imgSize} />
                                     ) : (
-                                        <Image source={{ uri: oldphoto !== photo ? photo : `http://192.168.18.7:4000/resources/uploads/${oldphoto}` }} style={styles.imgSize} />
+                                        <Image source={{uri: photo}} style={styles.imgSize} />
                                     )
                                 }
                                 {/* {
