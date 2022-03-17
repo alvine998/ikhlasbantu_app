@@ -24,13 +24,13 @@ const Home = (props) => {
 
 
     const getdata = () => {
-        axios.get(`http://192.168.18.7:4000/banners`).then(
+        axios.get(`http://ikhlasbantu.herokuapp.com/banners`).then(
             res => {
                 console.log(res.data);
                 const collect = res.data;
                 setCollect(collect);
                 setImages(
-                    collect.map(res => `http://192.168.18.7:4000/resources/uploads/${res.gambar}`)
+                    collect.map(res => `http://ikhlasbantu.herokuapp.com/resources/uploads/${res.gambar}`)
                 )
                 console.log(collect.map(res => res.gambar))
             }
@@ -44,7 +44,7 @@ const Home = (props) => {
 
 
     const carouselItems = collect.map(res => {
-        `http://192.168.18.7:4000/resources/uploads/${res.gambar}`
+        `http://ikhlasbantu.herokuapp.com/resources/uploads/${res.gambar}`
     })
 
     const onLayout = e => {

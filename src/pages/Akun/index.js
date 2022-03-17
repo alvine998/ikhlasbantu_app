@@ -51,7 +51,7 @@ const Akun = (props) => {
         formData.append("images", photoss)
 
         let result = { info: "" }
-        result = await fetch(`http://192.168.18.7:4000/upload/`, {
+        result = await fetch(`http://ikhlasbantu.herokuapp.com/upload/`, {
             method: "POST",
             body: formData
         }).then(
@@ -63,7 +63,7 @@ const Akun = (props) => {
         const dataUpdate = {
             foto: result.info,
         }
-        axios.put(`http://192.168.18.7:4000/users/${idUser}`, dataUpdate).then(
+        axios.put(`http://ikhlasbantu.herokuapp.com/users/${idUser}`, dataUpdate).then(
             res => {
                 console.log("Sukses Update")
             }
@@ -74,7 +74,7 @@ const Akun = (props) => {
     const getDataUser = async () => {
         await AsyncStorage.getItem("loginKey").then(
             res => {
-                axios.get(`http://192.168.18.7:4000/users/mail/${res}`).then(
+                axios.get(`http://ikhlasbantu.herokuapp.com/users/mail/${res}`).then(
                     result => {
                         const results = result.data;
                         setAlamat(results.alamat); setNama(results.nama);
@@ -115,7 +115,7 @@ const Akun = (props) => {
             alamat: alamat,
             pekerjaan: pekerjaan
         }
-        axios.put(`http://192.168.18.7:4000/users/${idUser}`, data).then(
+        axios.put(`http://ikhlasbantu.herokuapp.com/users/${idUser}`, data).then(
             res => {
                 console.log("sukses update akun");
                 Alert.alert("Berhasil Update Akun")
@@ -143,7 +143,7 @@ const Akun = (props) => {
                             <View style={styles.imgContainer}>
                                 {
                                     photo ? (
-                                        <Image source={{ uri: `http://192.168.18.7:4000/resources/uploads/${photo}` }} style={styles.imgSize2} />
+                                        <Image source={{ uri: `http://ikhlasbantu.herokuapp.com/resources/uploads/${photo}` }} style={styles.imgSize2} />
                                     ) :
                                         cPhoto.path ? cPhoto.path && (
                                             <Image source={{ uri: cPhoto.path }} style={styles.imgSize2} />

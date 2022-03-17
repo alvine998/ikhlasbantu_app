@@ -17,14 +17,14 @@ const DaftarDonasi = (props) => {
     const getDataUser = async () => {
         await AsyncStorage.getItem('loginKey').then(
             res => {
-                axios.get(`http://192.168.18.7:4000/users/mail/${res}`).then(
+                axios.get(`http://ikhlasbantu.herokuapp.com/users/mail/${res}`).then(
                     result => {
                         const results = result.data;
                         const id = {
                             iduser: results._id
                         };
                         console.log(results._id)
-                        axios.post(`http://192.168.18.7:4000/donasis/userid`, id).then(
+                        axios.post(`http://ikhlasbantu.herokuapp.com/donasis/userid`, id).then(
                             resp => {
                                 const collect = resp.data;
                                 setCollect(collect);
@@ -58,7 +58,7 @@ const DaftarDonasi = (props) => {
                                                     <Icon type='feather' name='camera-off' color={"#808080"} size={normalize(50)} />
                                                 </View>
                                             ) : (
-                                                <Image source={{ uri: `http://192.168.18.7:4000/resources/uploads/${e.foto}` }} style={styles.imgSize2} />
+                                                <Image source={{ uri: `http://ikhlasbantu.herokuapp.com/resources/uploads/${e.foto}` }} style={styles.imgSize2} />
                                             )
                                         }
                                         <View style={styles.container3}>

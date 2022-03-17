@@ -27,7 +27,7 @@ const Register = (props) => {
                 email: email,
                 password: password,
             }
-            axios.post(`http://192.168.18.7:4000/users`, data).then(
+            axios.post(`http://ikhlasbantu.herokuapp.com/users`, data).then(
                 res => {
                     console.log("Sukses Register", res.data);
                     Alert.alert("Sukses Daftar");

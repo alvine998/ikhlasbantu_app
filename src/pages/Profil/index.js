@@ -15,7 +15,7 @@ const Profil = (props) => {
     const getDataUser = async () => {
         await AsyncStorage.getItem("loginKey").then(
             res => {
-                axios.get(`http://192.168.18.7:4000/users/mail/${res}`).then(
+                axios.get(`http://ikhlasbantu.herokuapp.com/users/mail/${res}`).then(
                     result => {
                         const results = result.data;
                         setStatusUser(results.statususer); setNama(results.nama);
@@ -67,7 +67,7 @@ const Profil = (props) => {
                             >
                                 <View style={{ justifyContent: "center", alignItems: "center" }}>
                                     <View style={styles.boxModal}>
-                                        <Image source={{ uri: `http://192.168.18.7:4000/resources/uploads/${photo}` }} style={styles.imgSize3} />
+                                        <Image source={{ uri: `http://ikhlasbantu.herokuapp.com/resources/uploads/${photo}` }} style={styles.imgSize3} />
                                         <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
                                             <Text style={styles.text1}>Close</Text>
                                         </TouchableOpacity>
@@ -78,7 +78,7 @@ const Profil = (props) => {
                             <TouchableOpacity style={styles.imgContainer} onPress={() => setModalVisible(true)}>
                                 {
                                     photo !== '' ? (
-                                        <Image source={{ uri: `http://192.168.18.7:4000/resources/uploads/${photo}` }} style={styles.imgSize2} />
+                                        <Image source={{ uri: `http://ikhlasbantu.herokuapp.com/resources/uploads/${photo}` }} style={styles.imgSize2} />
                                     ) : (
                                         <Icon type='font-awesome' name='user' size={normalize(70)} color={"#808080"} />
                                     )

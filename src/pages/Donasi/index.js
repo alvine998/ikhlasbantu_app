@@ -23,7 +23,7 @@ const Donasi = (props) => {
 
     const [collect5, setCollect5] = useState([]);
     const getSemua = () => {
-        axios.get(`http://192.168.18.7:4000/donasis/valid/`).then(
+        axios.get(`http://ikhlasbantu.herokuapp.com/donasis/valid/`).then(
             res => {
                 const collect5 = res.data;
                 console.log("Ini Semua ", collect5);
@@ -36,7 +36,7 @@ const Donasi = (props) => {
         return (
             collect5.reverse().map((res, i) => (
                 <TouchableOpacity key={i} style={{ flexDirection: "row" }} onPress={() => sendDonasi(res._id)}>
-                    <Image source={{ uri: `http://192.168.18.7:4000/resources/uploads/${res.foto}` }} style={styles.imgSize2} />
+                    <Image source={{ uri: `http://ikhlasbantu.herokuapp.com/resources/uploads/${res.foto}` }} style={styles.imgSize2} />
                     <View style={styles.container3}>
                         <Text style={styles.text5}>{res.judul}</Text>
                         <View style={styles.lining} />
@@ -57,7 +57,7 @@ const Donasi = (props) => {
     }
     const [collect, setCollect] = useState([]);
     const getKesehatan = () => {
-        axios.get(`http://192.168.18.7:4000/donasis/valid/kesehatan`).then(
+        axios.get(`http://ikhlasbantu.herokuapp.com/donasis/valid/kesehatan`).then(
             res => {
                 const collect = res.data;
                 console.log("Kesehatan ", collect);
@@ -69,7 +69,7 @@ const Donasi = (props) => {
         return (
             collect.reverse().map((res, i) => (
                 <TouchableOpacity key={i} style={{ flexDirection: "row" }} onPress={() => sendDonasi(res._id)}>
-                    <Image source={{ uri: `http://192.168.18.7:4000/resources/uploads/${res.foto}` }} style={styles.imgSize2} />
+                    <Image source={{ uri: `http://ikhlasbantu.herokuapp.com/resources/uploads/${res.foto}` }} style={styles.imgSize2} />
                     <View style={styles.container3}>
                         <Text style={styles.text5}>{res.judul}</Text>
                         <View style={styles.lining} />
@@ -90,7 +90,7 @@ const Donasi = (props) => {
     }
     const [collect2, setCollect2] = useState([]);
     const getBencana = () => {
-        axios.get(`http://192.168.18.7:4000/donasis/valid/bencana`).then(
+        axios.get(`http://ikhlasbantu.herokuapp.com/donasis/valid/bencana`).then(
             res => {
                 const collect2 = res.data;
                 console.log("Bencana ", collect2);
@@ -102,7 +102,7 @@ const Donasi = (props) => {
         return (
             collect2.reverse().map((res, i) => (
                 <TouchableOpacity key={i} style={{ flexDirection: "row" }} onPress={() => sendDonasi(res._id)}>
-                    <Image source={{ uri: `http://192.168.18.7:4000/resources/uploads/${res.foto}` }} style={styles.imgSize2} />
+                    <Image source={{ uri: `http://ikhlasbantu.herokuapp.com/resources/uploads/${res.foto}` }} style={styles.imgSize2} />
                     <View style={styles.container3}>
                         <Text style={styles.text5}>{res.judul}</Text>
                         <View style={styles.lining} />
@@ -123,7 +123,7 @@ const Donasi = (props) => {
     }
     const [collect3, setCollect3] = useState([]);
     const getSedekah = () => {
-        axios.get(`http://192.168.18.7:4000/donasis/valid/sedekah`).then(
+        axios.get(`http://ikhlasbantu.herokuapp.com/donasis/valid/sedekah`).then(
             res => {
                 const collect3 = res.data;
                 console.log("Sedekah ", collect3);
@@ -135,7 +135,7 @@ const Donasi = (props) => {
         return (
             collect3.reverse().map((res, i) => (
                 <TouchableOpacity key={i} style={{ flexDirection: "row" }} onPress={() => sendDonasi(res._id)}>
-                    <Image source={{ uri: `http://192.168.18.7:4000/resources/uploads/${res.foto}` }} style={styles.imgSize2} />
+                    <Image source={{ uri: `http://ikhlasbantu.herokuapp.com/resources/uploads/${res.foto}` }} style={styles.imgSize2} />
                     <View style={styles.container3}>
                         <Text style={styles.text5}>{res.judul}</Text>
                         <View style={styles.lining} />
@@ -156,7 +156,7 @@ const Donasi = (props) => {
     }
     const [collect4, setCollect4] = useState([]);
     const getLainlain = () => {
-        axios.get(`http://192.168.18.7:4000/donasis/valid/lain-lain`).then(
+        axios.get(`http://ikhlasbantu.herokuapp.com/donasis/valid/lain-lain`).then(
             res => {
                 const collect4 = res.data;
                 console.log("Ini Lainlain ", collect4);
@@ -168,7 +168,7 @@ const Donasi = (props) => {
         return (
             collect4.reverse().map((res, i) => (
                 <TouchableOpacity key={i} style={{ flexDirection: "row" }} onPress={() => sendDonasi(res._id)}>
-                    <Image source={{ uri: `http://192.168.18.7:4000/resources/uploads/${res.foto}` }} style={styles.imgSize2} />
+                    <Image source={{ uri: `http://ikhlasbantu.herokuapp.com/resources/uploads/${res.foto}` }} style={styles.imgSize2} />
                     <View style={styles.container3}>
                         <Text style={styles.text5}>{res.judul}</Text>
                         <View style={styles.lining} />

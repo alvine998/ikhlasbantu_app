@@ -20,7 +20,7 @@ const Login = (props) => {
             email: email,
             password: password
         }
-        axios.post(`http://192.168.18.7:4000/users/login`, data).then(
+        axios.post(`http://ikhlasbantu.herokuapp.com/users/login`, data).then(
             res => {
                 console.log("Berhasil Login", res.data);
                 sendLogin(mail);
