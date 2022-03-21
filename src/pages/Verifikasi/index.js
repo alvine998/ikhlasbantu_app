@@ -63,7 +63,7 @@ const Verifikasi = (props) => {
     const getData = async () => {
         await AsyncStorage.getItem(`loginKey`).then(
             res => {
-                axios.get(`http://192.168.18.7:4000/users/mail/${res}`).then(
+                axios.get(`https://ikhlasbantu.herokuapp.com/users/mail/${res}`).then(
                     result => {
                         const results = result.data;
                         setOldPhoto(results.fotoktp); setStatusKTP(results.statusktp);
@@ -88,7 +88,7 @@ const Verifikasi = (props) => {
 
         let result = { info: "" }
 
-        result = await fetch(`http://192.168.18.7:4000/upload/ktp`, {
+        result = await fetch(`https://ikhlasbantu.herokuapp.com/upload/ktp`, {
             method: "POST",
             body: formData
         }).then(
@@ -104,7 +104,7 @@ const Verifikasi = (props) => {
             statusktp: 'waiting'
         }
 
-        axios.put(`http://192.168.18.7:4000/users/${idUser}`, dataUpdate).then(
+        axios.put(`https://ikhlasbantu.herokuapp.com/users/${idUser}`, dataUpdate).then(
             res => {
                 console.log("Sukses Update")
             }
@@ -135,7 +135,7 @@ const Verifikasi = (props) => {
                                         <Image source={{ uri: photo }} style={styles.imgSize2} />
                                     )
                                         : oldphoto !== null ? (
-                                            <Image source={{ uri: `http://192.168.18.7:4000/resources/uploads/${oldphoto}` }} style={styles.imgSize2} />
+                                            <Image source={{ uri: `https://ikhlasbantu.herokuapp.com/resources/uploads/${oldphoto}` }} style={styles.imgSize2} />
                                         ) :
                                             (
                                                 <Image source={ktp} style={styles.imgSize} />

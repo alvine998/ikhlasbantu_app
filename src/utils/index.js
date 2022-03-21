@@ -11,7 +11,7 @@ export const uploadReplaceImage = async (photos) => {
   let formData = new FormData();
   formData.append("files", photo)
 
-  const {data: dataImage} = await fetch(`http://192.168.18.7:4000/upload/ktp`, {
+  const {data: dataImage} = await fetch(`https://ikhlasbantu.herokuapp.com/upload/ktp`, {
     method: "POST",
     body: formData
   })

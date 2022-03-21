@@ -70,7 +70,7 @@ const UploadDonasi = (props) => {
 
         let result = { info: "" }
 
-        result = fetch(`http://192.168.18.7:4000/upload/donasi`, {
+        result = fetch(`https://ikhlasbantu.herokuapp.com/upload/donasi`, {
             method: "POST",
             body: formData
         }).then(
@@ -83,7 +83,7 @@ const UploadDonasi = (props) => {
         const data = {
             foto: result.info
         }
-        axios.put(`http://192.168.18.7:4000/donasis/${id}`, data).then(
+        axios.put(`https://ikhlasbantu.herokuapp.com/donasis/${id}`, data).then(
             res => {
                 console.log(res.data);
 

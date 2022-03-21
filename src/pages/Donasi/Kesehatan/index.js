@@ -11,7 +11,7 @@ const Kesehatan = (props) => {
     const [nama, setNama] = useState('')
 
     const getDataKesehatan = () => {
-        axios.get(`http://192.168.18.7:4000/donasis/valid/kesehatan`).then(
+        axios.get(`https://ikhlasbantu.herokuapp.com/donasis/valid/kesehatan`).then(
             res => {
                 const collect = res.data;
                 console.log(collect);
@@ -56,7 +56,7 @@ const Kesehatan = (props) => {
                         {
                             collect.reverse().map((res, i) => (
                                 <TouchableOpacity key={i} style={{ flexDirection: "row" }} onPress={() => sendDonasi(res._id)}>
-                                    <Image source={{ uri: `http://192.168.18.7:4000/resources/uploads/${res.foto}` }} style={styles.imgSize2} />
+                                    <Image source={{ uri: `https://ikhlasbantu.herokuapp.com/resources/uploads/${res.foto}` }} style={styles.imgSize2} />
                                     <View style={styles.container3}>
                                         <Text style={styles.text5}>{res.judul}</Text>
                                         <View style={styles.lining} />

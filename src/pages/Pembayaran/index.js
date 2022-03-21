@@ -56,7 +56,7 @@ const Pembayaran = (props) => {
     const getData = async () => {
         await AsyncStorage.getItem(`loginKey`).then(
             res => {
-                axios.get(`http://192.168.18.7:4000/users/mail/${res}`).then(
+                axios.get(`https://ikhlasbantu.herokuapp.com/users/mail/${res}`).then(
                     result => {
                         const results = result.data;
                         setIdUser(results._id);
@@ -78,7 +78,7 @@ const Pembayaran = (props) => {
 
         let result = { info: "" }
 
-        result = await fetch(`http://192.168.18.7:4000/upload/ktp`, {
+        result = await fetch(`https://ikhlasbantu.herokuapp.com/upload/ktp`, {
             method: "POST",
             body: formData
         }).then(
@@ -97,7 +97,7 @@ const Pembayaran = (props) => {
             status_transaksi: 'waiting'
         }
 
-        axios.put(`http://192.168.18.7:4000/transaksi/user/${idUser}`, foto ? dataUpdate : dataUpdate2).then(
+        axios.put(`https://ikhlasbantu.herokuapp.com/transaksi/user/${idUser}`, foto ? dataUpdate : dataUpdate2).then(
             res => {
                 console.log("Sukses Update")
             }
@@ -133,7 +133,7 @@ const Pembayaran = (props) => {
                                 }
                                 {/* {
                                     (photo !== '' || oldphoto !== '') && (
-                                        <Image source={{uri: oldphoto !== photo ? photo : `http://192.168.18.7:4000/resources/uploads/${oldphoto}`}} style={styles.imgSize} />
+                                        <Image source={{uri: oldphoto !== photo ? photo : `https://ikhlasbantu.herokuapp.com/resources/uploads/${oldphoto}`}} style={styles.imgSize} />
                                     )
                                 } */}
                                 <Text style={styles.text5}>Upload disini</Text>

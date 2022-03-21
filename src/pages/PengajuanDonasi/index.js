@@ -31,7 +31,7 @@ const PengajuanDonasi = (props) => {
     const getDataUser = async () => {
         setMail(
             await AsyncStorage.getItem('loginKey').then(
-                res => axios.get(`http://192.168.18.7:4000/users/mail/${res}`).then(
+                res => axios.get(`https://ikhlasbantu.herokuapp.com/users/mail/${res}`).then(
                     result => { return result.data }
                 )
             )
@@ -80,7 +80,7 @@ const PengajuanDonasi = (props) => {
         formData.append("donasiimages", photo)
 
         setInfo(
-            fetch(`http://192.168.18.7:4000/upload/donasi`, {
+            fetch(`https://ikhlasbantu.herokuapp.com/upload/donasi`, {
                 method: "POST",
                 body: formData
             }).then(
@@ -115,7 +115,7 @@ const PengajuanDonasi = (props) => {
                 durasi: durasi,
             }
             try {
-                await axios.post(`http://192.168.18.7:4000/donasis`, data).then(
+                await axios.post(`https://ikhlasbantu.herokuapp.com/donasis`, data).then(
                     res => {
                         console.log(res.data);
                         console.log("Sukses");

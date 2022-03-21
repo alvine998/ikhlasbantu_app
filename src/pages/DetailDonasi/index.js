@@ -25,7 +25,7 @@ const DetailDonasi = (props) => {
                 console.log(res)
                 setKey(res)
 
-                axios.get(`http://192.168.18.7:4000/transaksi/donasi/${res}`).then(
+                axios.get(`https://ikhlasbantu.herokuapp.com/transaksi/donasi/${res}`).then(
                     res => {
                         const id = res.data;
                         console.log(id);
@@ -33,7 +33,7 @@ const DetailDonasi = (props) => {
                     }
                 )
 
-                axios.get(`http://192.168.18.7:4000/donasis/${res}`).then(
+                axios.get(`https://ikhlasbantu.herokuapp.com/donasis/${res}`).then(
                     res => {
                         const collect = res.data;
                         console.log(collect);
@@ -92,7 +92,7 @@ const DetailDonasi = (props) => {
                         >
                             <View style={{ justifyContent: "center", alignItems: "center" }}>
                                 <View style={styles.boxModal}>
-                                    <Image source={{ uri: `http://192.168.18.7:4000/resources/uploads/${foto}` }} style={styles.imgSize3} />
+                                    <Image source={{ uri: `https://ikhlasbantu.herokuapp.com/resources/uploads/${foto}` }} style={styles.imgSize3} />
                                     <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
                                         <Text style={styles.text1}>Close</Text>
                                     </TouchableOpacity>
@@ -100,7 +100,7 @@ const DetailDonasi = (props) => {
                             </View>
                         </Modal>
                         <TouchableOpacity onPress={() => setModalVisible(true)}>
-                            <Image source={{ uri: `http://192.168.18.7:4000/resources/uploads/${foto}` }} style={styles.imgSize2} />
+                            <Image source={{ uri: `https://ikhlasbantu.herokuapp.com/resources/uploads/${foto}` }} style={styles.imgSize2} />
                         </TouchableOpacity>
                     </View>
 
