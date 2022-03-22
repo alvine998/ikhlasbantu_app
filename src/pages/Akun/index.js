@@ -32,7 +32,6 @@ const Akun = (props) => {
             } else {
                 console.log(image);
                 setCPhoto(image);
-                uploadImage();
             }
         })
     }
@@ -108,6 +107,7 @@ const Akun = (props) => {
     }
 
     const updateAkun = () => {
+        uploadImage();
         const data = {
             nama : nama,
             email: email,
