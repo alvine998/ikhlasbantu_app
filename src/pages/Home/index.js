@@ -13,6 +13,35 @@ const Home = (props) => {
     const [wdth, setWdth] = useState(0);
     const [collect, setCollect] = useState([]);
     const [images, setImages] = useState([]);
+    const [sholat, setSholat] = useState([]);
+    const [surah, setSurah] = useState([]);
+
+    const getSholat = () => {
+        axios.get(`https://api.pray.zone/v2/times/today.json?city=jakarta`)
+            .then(
+                res => {
+                    console.log(res.data)
+                    const collect = res.data;
+                    console.log(collect.results.datetime)
+                    const sholat = collect.results.datetime;
+                    sholat.map((e, i) => {
+                        console.log(e.times.Asr)
+                    })
+                    setSholat(sholat);
+                }
+            )
+    }
+
+    const getSurah = () => {
+        axios.get(`https://api-alquranid.herokuapp.com/surah/1`)
+            .then(
+                res => {
+                    const surah = res.data.data;
+                    console.log(surah);
+                    setSurah(surah);
+                }
+            )
+    }
 
     const getLogin = async () => {
         await AsyncStorage.getItem("loginKey").then(
@@ -40,6 +69,8 @@ const Home = (props) => {
     useEffect(() => {
         getdata();
         getLogin();
+        getSholat();
+        getSurah();
     }, [])
 
 
@@ -74,21 +105,24 @@ const Home = (props) => {
 
                     <View style={styles.lining} />
                     <View style={styles.container1}>
-                        <Text style={styles.text1}>Mau Mengajukan Donasi?</Text>
-                        <TouchableOpacity style={styles.btn1}>
-                            <Text style={styles.text2}>Ajukan Sekarang</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={styles.btn1}>
-                            <Text style={styles.text3}>Bagaimana Cara Pengajuan Donasi?</Text>
-                        </TouchableOpacity>
-                    </View>
-
-                    <View style={styles.lining} />
-                    <View style={styles.container1}>
-                        <Text style={styles.text1}>Pilihan Kategori Donasi</Text>
+                        <Text style={styles.text1}>Menu</Text>
                         <View style={styles.rowing}>
-                            <TouchableOpacity onPress={() => props.navigation.navigate("donasi-kesehatan")}>
+                            <Icon type={"font-awesome-5"} name="book-qur'an"/>
+                        </View>
+                        <Text style={styles.text1}>Tanggal Hijriah</Text>
+                        {
+                            sholat.map((e, i) => (
+                                <View key={i}>
+                                    <Text style={styles.text1}>{e.date.hijri}</Text>
+                                </View>
+                            ))
+                        }
+
+                    </View>
+                    <View style={styles.container1}>
+                        <Text style={styles.text1}>Waktu Sholat</Text>
+                        <View>
+                            {/* <TouchableOpacity onPress={() => props.navigation.navigate("donasi-kesehatan")}>
                                 <Image source={kesehatan} style={styles.imgSize2} />
                                 <Text style={styles.text4}>Kesehatan</Text>
                             </TouchableOpacity>
@@ -101,8 +135,28 @@ const Home = (props) => {
                             <TouchableOpacity onPress={() => props.navigation.navigate("donasi-sedekah")}>
                                 <Image source={sedekah} style={styles.imgSize2} />
                                 <Text style={styles.text4}>Sedekah</Text>
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
+                            {
+                                sholat.map((e, i) => (
+                                    <View style={styles.rowing} key={i}>
+                                        <Text style={styles.text1}>Subuh{`\n`}{e.times.Imsak}</Text>
+                                        <Text style={styles.text1}>Dzuhur{`\n`}{e.times.Dhuhr}</Text>
+                                        <Text style={styles.text1}>Ashar{`\n`}{e.times.Asr}</Text>
+                                        <Text style={styles.text1}>Maghrib{`\n`}{e.times.Maghrib}</Text>
+                                        <Text style={styles.text1}>Isya{`\n`}{e.times.Isha}</Text>
+                                    </View>
+                                ))
+                            }
                         </View>
+                    </View>
+                    <View style={styles.container1}>
+                        {
+                            surah.map((e, i) => (
+                                <View key={i}>
+                                    <Text style={styles.text1}>{e.ar}</Text>
+                                </View>
+                            ))
+                        }
                     </View>
 
                     <View style={styles.lining} />
@@ -190,7 +244,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        paddingTop: normalize(20)
+        paddingTop: normalize(10)
     },
     text4: {
         textAlign: "center",
