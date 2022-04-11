@@ -7,6 +7,8 @@ import emptyMessage from './images/emptymessage.png';
 import muamalat from './images/muamalat.png';
 import payment from './images/payment.jpg';
 import ktp from './images/ktp.jpg';
+import shalat_time from './icons/shalat_time.png';
+import alquran from './icons/alquran.png';
 
 
 export {
@@ -18,5 +20,7 @@ export {
     emptyMessage,
     muamalat,
     payment,
-    ktp
+    ktp,
+    alquran,
+    shalat_time
 }

@@ -5,7 +5,7 @@ import { Image, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpa
 import { Icon } from 'react-native-elements';
 import { SliderBox } from 'react-native-image-slider-box';
 import normalize from 'react-native-normalize';
-import { bencana, jumatsedekah, kesehatan, logo, sedekah } from '../../assets';
+import { bencana, jumatsedekah, kesehatan, logo, sedekah, shalat_time, alquran } from '../../assets';
 
 const Home = (props) => {
 
@@ -104,38 +104,37 @@ const Home = (props) => {
                     </View>
 
                     <View style={styles.lining} />
-                    <View style={styles.container1}>
-                        <Text style={styles.text1}>Menu</Text>
-                        <View style={styles.rowing}>
-                            <Icon type={"font-awesome-5"} name="book-qur'an"/>
-                        </View>
-                        <Text style={styles.text1}>Tanggal Hijriah</Text>
+                    <View style={{ padding: normalize(10) }}>
+                        <Text style={[styles.text1, { textAlign: "left" }]}>Tanggal Hijriah</Text>
                         {
                             sholat.map((e, i) => (
                                 <View key={i}>
-                                    <Text style={styles.text1}>{e.date.hijri}</Text>
+                                    <Text style={[styles.text1, { textAlign: "left" }]}>{e.date.hijri}</Text>
                                 </View>
                             ))
                         }
+                    </View>
+
+                    <View style={styles.container1}>
+
+
+                        <Text style={styles.text1}>Menu</Text>
+                        <View style={styles.rowing}>
+                            <TouchableOpacity style={{ alignItems: "center", justifyContent: "center" }}>
+                                <Image source={shalat_time} style={styles.iconStyle} />
+                                <Text style={styles.text1}>Waktu Sholat</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{ alignItems: "center", justifyContent: "center", marginLeft:normalize(20) }}>
+                                <Image source={alquran} style={styles.iconStyle} />
+                                <Text style={styles.text1}>Baca Qur'an</Text>
+                            </TouchableOpacity>
+                        </View>
+
 
                     </View>
                     <View style={styles.container1}>
-                        <Text style={styles.text1}>Waktu Sholat</Text>
+                        {/* <Text style={styles.text1}>Waktu Sholat</Text>
                         <View>
-                            {/* <TouchableOpacity onPress={() => props.navigation.navigate("donasi-kesehatan")}>
-                                <Image source={kesehatan} style={styles.imgSize2} />
-                                <Text style={styles.text4}>Kesehatan</Text>
-                            </TouchableOpacity>
-                            <View style={{ paddingLeft: normalize(40) }} />
-                            <TouchableOpacity onPress={() => props.navigation.navigate("donasi-bencana")}>
-                                <Image source={bencana} style={styles.imgSize2} />
-                                <Text style={styles.text4}>Bencana</Text>
-                            </TouchableOpacity>
-                            <View style={{ paddingLeft: normalize(40) }} />
-                            <TouchableOpacity onPress={() => props.navigation.navigate("donasi-sedekah")}>
-                                <Image source={sedekah} style={styles.imgSize2} />
-                                <Text style={styles.text4}>Sedekah</Text>
-                            </TouchableOpacity> */}
                             {
                                 sholat.map((e, i) => (
                                     <View style={styles.rowing} key={i}>
@@ -147,16 +146,16 @@ const Home = (props) => {
                                     </View>
                                 ))
                             }
-                        </View>
+                        </View> */}
                     </View>
                     <View style={styles.container1}>
-                        {
+                        {/* {
                             surah.map((e, i) => (
                                 <View key={i}>
                                     <Text style={styles.text1}>{e.ar}</Text>
                                 </View>
                             ))
-                        }
+                        } */}
                     </View>
 
                     <View style={styles.lining} />
@@ -194,6 +193,10 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         flexDirection: "row",
         alignItems: "center"
+    },
+    iconStyle: {
+        width: normalize(80),
+        height: normalize(80)
     },
     text1: {
         fontFamily: "Quicksand-Bold",
