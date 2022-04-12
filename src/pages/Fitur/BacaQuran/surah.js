@@ -19,16 +19,16 @@ const SurahQuran = (props) => {
                     .then(
                         result => {
                             const surah = result.data.data;
-                            const bismillah = surah.preBismillah;
-                            const translate = surah.preBismillah.translation.id;
-                            console.log(surah.verses.map(e => e.text.arab));
+
+                            console.log("Null is :", bismillah, translate);
                             setSurah(surah.verses);
-                            if(bismillah.text.arab == null){
-                                setBismillah("")
-                            }
-                            setBismillah(bismillah.text.arab);
-                            setTranslate(translate);
                             setLoading(false);
+                            if (res !== 1) {
+                                const bismillah = surah.preBismillah;
+                                const translate = surah.preBismillah.translation.id;
+                                setBismillah(bismillah.text.arab);
+                                setTranslate(translate);
+                            }
                         }
                     )
             }
@@ -61,8 +61,19 @@ const SurahQuran = (props) => {
                                 <View>
                                     <ScrollView>
                                         <View style={styles.boxSurah}>
-                                            <Text style={[styles.text2, { textAlign: "center" }]}>{bismillah == null ? "" : bismillah}</Text>
-                                            <Text style={styles.text3}>{translate}</Text>
+                                            {
+                                                bismillah ? (
+                                                    <View>
+
+                                                    </View>
+                                                ) : (
+                                                    <View>
+                                                        <Text style={[styles.text2, { textAlign: "center" }]}>{bismillah}</Text>
+                                                        <Text style={styles.text3}>{translate}</Text>
+                                                    </View>
+                                                )
+                                            }
+
                                         </View>
                                         {
                                             surah.map((e, i) => (
