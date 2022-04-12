@@ -66,6 +66,11 @@ const Pembayaran = (props) => {
         )
     }
 
+    const donePayment = () => {
+        alert("Terimakasih telah berdonasi :)");
+        props.navigation.navigate("home")
+    }
+
     const uploadImage = async () => {
         let photo = {
             name: photos.fileName,
@@ -139,7 +144,7 @@ const Pembayaran = (props) => {
                                 <Text style={styles.text5}>Upload disini</Text>
                             </TouchableOpacity>
                         </View>
-                        <TouchableOpacity >
+                        <TouchableOpacity onPress={()=>donePayment()} >
                             <View style={styles.btn1}>
                                 <Text style={styles.text1}>Konfirmasi Pembayaran</Text>
                             </View>

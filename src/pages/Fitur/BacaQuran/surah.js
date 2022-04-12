@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Image, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Image, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import normalize from 'react-native-normalize';
 import { emptyMessage } from '../../../assets';
@@ -10,6 +10,7 @@ const SurahQuran = (props) => {
     const [surah, setSurah] = useState([]);
     const [bismillah, setBismillah] = useState("");
     const [translate, setTranslate] = useState("");
+    const [loading, setLoading] = useState(true);
 
     const getSurah = () => {
         AsyncStorage.getItem('nomor').then(
@@ -22,8 +23,12 @@ const SurahQuran = (props) => {
                             const translate = surah.preBismillah.translation.id;
                             console.log(surah.verses.map(e => e.text.arab));
                             setSurah(surah.verses);
+                            if(bismillah.text.arab == null){
+                                setBismillah("")
+                            }
                             setBismillah(bismillah.text.arab);
                             setTranslate(translate);
+                            setLoading(false);
                         }
                     )
             }
@@ -45,27 +50,34 @@ const SurahQuran = (props) => {
                     </TouchableOpacity>
                     <Text style={styles.text1}>Baca Al-Qur'an</Text>
                 </View>
-                <ScrollView>
-                    <View>
-                        <View>
-                            <Text style={styles.text1}>Waktu Sholat</Text>
-                            <ScrollView>
-                                <View style={styles.boxSurah}>
-                                    <Text style={[styles.text2, {textAlign:"center"}]}>{bismillah}</Text>
-                                    <Text style={styles.text3}>{translate}</Text>
-                                </View>
-                                {
-                                    surah.map((e, i) => (
-                                        <View style={styles.boxSurah} key={i}>
-                                            <Text style={styles.text2}>{e.text.arab}</Text>
-                                            <Text style={styles.text3}>{e.translation.id} ({e.number.inSurah})</Text>
-                                        </View>
-                                    ))
-                                }
-                            </ScrollView>
+                {
+                    loading ? (
+                        <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+                            <ActivityIndicator size={"large"} />
                         </View>
-                    </View>
-                </ScrollView>
+                    ) : (
+                        <ScrollView>
+                            <View>
+                                <View>
+                                    <ScrollView>
+                                        <View style={styles.boxSurah}>
+                                            <Text style={[styles.text2, { textAlign: "center" }]}>{bismillah == null ? "" : bismillah}</Text>
+                                            <Text style={styles.text3}>{translate}</Text>
+                                        </View>
+                                        {
+                                            surah.map((e, i) => (
+                                                <View style={styles.boxSurah} key={i}>
+                                                    <Text style={styles.text2}>{e.text.arab}</Text>
+                                                    <Text style={styles.text3}>{e.translation.id} ({e.number.inSurah})</Text>
+                                                </View>
+                                            ))
+                                        }
+                                    </ScrollView>
+                                </View>
+                            </View>
+                        </ScrollView>
+                    )
+                }
             </View>
         </View>
     );

@@ -1,13 +1,14 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Image, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Image, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import normalize from 'react-native-normalize';
 import { emptyMessage } from '../../../assets';
 
 const BacaQuran = (props) => {
     const [surah, setSurah] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const getSurah = () => {
         axios.get(`https://api-alquranid.herokuapp.com/surah/`)
@@ -16,6 +17,7 @@ const BacaQuran = (props) => {
                     const surah = res.data.data;
                     console.log(surah);
                     setSurah(surah);
+                    setLoading(false);
                 }
             )
     }
@@ -27,9 +29,8 @@ const BacaQuran = (props) => {
     }
 
     useEffect(() => {
-        getSurah();
+        getSurah()
     }, [])
-
 
     return (
         <View>
@@ -41,22 +42,29 @@ const BacaQuran = (props) => {
                     </TouchableOpacity>
                     <Text style={styles.text1}>Baca Al-Qur'an</Text>
                 </View>
-                <ScrollView>
-                    <View>
-                        <View>
-                            <Text style={styles.text1}>Waktu Sholat</Text>
-                            <ScrollView>
-                                {
-                                    surah.map((e, i) => (
-                                        <TouchableOpacity onPress={() => getData(e.nomor)} style={styles.boxSurah} key={i}>
-                                            <Text style={styles.text2}>{e.nomor}. {e.nama} ({e.ayat}) ayat</Text>
-                                        </TouchableOpacity>
-                                    ))
-                                }
-                            </ScrollView>
+                {
+                    loading ? (
+                        <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+                            <ActivityIndicator size={"large"} />
                         </View>
-                    </View>
-                </ScrollView>
+                    ) : (
+                        <ScrollView>
+                            <View>
+                                <View>
+                                    <ScrollView>
+                                        {
+                                            surah.map((e, i) => (
+                                                <TouchableOpacity onPress={() => getData(e.nomor)} style={styles.boxSurah} key={i}>
+                                                    <Text style={styles.text2}>{e.nomor}. {e.nama} ({e.ayat}) ayat</Text>
+                                                </TouchableOpacity>
+                                            ))
+                                        }
+                                    </ScrollView>
+                                </View>
+                            </View>
+                        </ScrollView>
+                    )
+                }
             </View>
         </View>
     );
