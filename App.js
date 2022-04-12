@@ -13,6 +13,9 @@ import Bencana from './src/pages/Donasi/BencanaAlam';
 import Kesehatan from './src/pages/Donasi/Kesehatan';
 import Lainlain from './src/pages/Donasi/Lainlain';
 import Sedekah from './src/pages/Donasi/Sedekah';
+import BacaQuran from './src/pages/Fitur/BacaQuran';
+import SurahQuran from './src/pages/Fitur/BacaQuran/surah';
+import JadwalSholat from './src/pages/Fitur/JadwalSholat';
 import Home from './src/pages/Home';
 import Intro from './src/pages/Intro';
 import KotakMasuk from './src/pages/KotakMasuk';
@@ -55,6 +58,9 @@ const App = (props) => {
         <Stack.Screen name='pembayaran' component={Pembayaran}/>
         <Stack.Screen name='pengajuan-donasi' component={PengajuanDonasi}/>
         <Stack.Screen name='upload-donasi' component={UploadDonasi}/>
+        <Stack.Screen name='jadwal-sholat' component={JadwalSholat}/>
+        <Stack.Screen name='baca-quran' component={BacaQuran}/>
+        <Stack.Screen name='surah-quran' component={SurahQuran}/>
       </Stack.Navigator>
     </NavigationContainer>
     // <View>

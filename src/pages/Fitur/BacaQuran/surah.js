@@ -6,24 +6,28 @@ import { Icon } from 'react-native-elements';
 import normalize from 'react-native-normalize';
 import { emptyMessage } from '../../../assets';
 
-const BacaQuran = (props) => {
+const SurahQuran = (props) => {
     const [surah, setSurah] = useState([]);
+    const [bismillah, setBismillah] = useState("");
+    const [translate, setTranslate] = useState("");
 
     const getSurah = () => {
-        axios.get(`https://api-alquranid.herokuapp.com/surah/`)
-            .then(
-                res => {
-                    const surah = res.data.data;
-                    console.log(surah);
-                    setSurah(surah);
-                }
-            )
-    }
-
-    const getData = async (id) => {
-        await AsyncStorage.setItem('nomor', id);
-        console.log(id);
-        props.navigation.navigate('surah-quran');
+        AsyncStorage.getItem('nomor').then(
+            res => {
+                axios.get(`https://api.quran.sutanlab.id/surah/${res}`)
+                    .then(
+                        result => {
+                            const surah = result.data.data;
+                            const bismillah = surah.preBismillah;
+                            const translate = surah.preBismillah.translation.id;
+                            console.log(surah.verses.map(e => e.text.arab));
+                            setSurah(surah.verses);
+                            setBismillah(bismillah.text.arab);
+                            setTranslate(translate);
+                        }
+                    )
+            }
+        )
     }
 
     useEffect(() => {
@@ -36,7 +40,7 @@ const BacaQuran = (props) => {
             <StatusBar animated backgroundColor={"#9724DE"} barStyle={'light-content'} />
             <View style={styles.background}>
                 <View style={styles.header}>
-                    <TouchableOpacity style={{ paddingRight: normalize(20) }} onPress={() => props.navigation.navigate("home")}>
+                    <TouchableOpacity style={{ paddingRight: normalize(20) }} onPress={() => props.navigation.goBack()}>
                         <Icon type='font-awesome' name='arrow-left' color={"#fff"} size={normalize(20)} />
                     </TouchableOpacity>
                     <Text style={styles.text1}>Baca Al-Qur'an</Text>
@@ -46,11 +50,16 @@ const BacaQuran = (props) => {
                         <View>
                             <Text style={styles.text1}>Waktu Sholat</Text>
                             <ScrollView>
+                                <View style={styles.boxSurah}>
+                                    <Text style={[styles.text2, {textAlign:"center"}]}>{bismillah}</Text>
+                                    <Text style={styles.text3}>{translate}</Text>
+                                </View>
                                 {
                                     surah.map((e, i) => (
-                                        <TouchableOpacity onPress={() => getData(e.nomor)} style={styles.boxSurah} key={i}>
-                                            <Text style={styles.text2}>{e.nomor}. {e.nama} ({e.ayat}) ayat</Text>
-                                        </TouchableOpacity>
+                                        <View style={styles.boxSurah} key={i}>
+                                            <Text style={styles.text2}>{e.text.arab}</Text>
+                                            <Text style={styles.text3}>{e.translation.id} ({e.number.inSurah})</Text>
+                                        </View>
                                     ))
                                 }
                             </ScrollView>
@@ -62,11 +71,10 @@ const BacaQuran = (props) => {
     );
 }
 
-export default BacaQuran;
+export default SurahQuran;
 
 const styles = StyleSheet.create({
     background: {
-        height: "100%",
         backgroundColor: "#fff"
     },
     imgSize: {
@@ -90,6 +98,13 @@ const styles = StyleSheet.create({
         color: "#9724DE",
         fontSize: normalize(20),
         paddingLeft: normalize(10),
+        textAlign: 'right'
+    },
+    text3: {
+        fontFamily: "Quicksand-Bold",
+        color: "black",
+        fontSize: normalize(14),
+        paddingLeft: normalize(10),
         textAlign: 'left'
     },
     container: {
@@ -106,7 +121,6 @@ const styles = StyleSheet.create({
     boxSurah: {
         borderWidth: 1,
         width: '100%',
-        height: normalize(40),
         borderColor: "#808080"
     }
 })
