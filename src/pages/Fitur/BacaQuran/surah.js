@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     text2: {
         fontFamily: "Quicksand-Bold",
         color: "#9724DE",
-        fontSize: normalize(20),
+        fontSize: normalize(30),
         paddingLeft: normalize(10),
         textAlign: 'right'
     },
@@ -144,6 +144,7 @@ const styles = StyleSheet.create({
     boxSurah: {
         borderWidth: 1,
         width: '100%',
-        borderColor: "#808080"
+        borderColor: "#808080",
+        padding:normalize(10)
     }
 })

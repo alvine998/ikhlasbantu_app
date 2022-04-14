@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         width: '100%',
         height: normalize(40),
-        borderColor: "#808080"
+        borderColor: "#808080",
+        justifyContent:"center"
     }
 })

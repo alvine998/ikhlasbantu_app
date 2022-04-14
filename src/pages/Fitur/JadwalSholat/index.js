@@ -91,11 +91,9 @@ const styles = StyleSheet.create({
         fontFamily: "Quicksand-Bold",
         color: "#9724DE",
         fontSize: normalize(20),
-        paddingLeft:normalize(10),
         textAlign:'center'
     },
     container: {
-        padding: normalize(20),
         justifyContent: "center",
         alignItems: "center",
         marginTop: normalize(150)
