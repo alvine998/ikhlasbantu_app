@@ -16,6 +16,7 @@ import Sedekah from './src/pages/Donasi/Sedekah';
 import BacaQuran from './src/pages/Fitur/BacaQuran';
 import SurahQuran from './src/pages/Fitur/BacaQuran/surah';
 import JadwalSholat from './src/pages/Fitur/JadwalSholat';
+import HitungZakat from './src/pages/Fitur/Zakat/HitungZakat';
 import Home from './src/pages/Home';
 import Intro from './src/pages/Intro';
 import KotakMasuk from './src/pages/KotakMasuk';
@@ -61,6 +62,7 @@ const App = (props) => {
         <Stack.Screen name='jadwal-sholat' component={JadwalSholat}/>
         <Stack.Screen name='baca-quran' component={BacaQuran}/>
         <Stack.Screen name='surah-quran' component={SurahQuran}/>
+        <Stack.Screen name='hitung-zakat' component={HitungZakat}/>
       </Stack.Navigator>
     </NavigationContainer>
     // <View>

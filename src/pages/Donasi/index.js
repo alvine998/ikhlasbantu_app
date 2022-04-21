@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Alert, Image, ImageBackground, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useCallback, useEffect } from 'react';
+import { Alert, Image, ImageBackground, RefreshControl, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import normalize from 'react-native-normalize';
 import { useState } from "react";
 import axios from 'axios';
@@ -14,9 +14,9 @@ const Donasi = (props) => {
     const [active4, setActive4] = useState(false);
     const [active5, setActive5] = useState(false);
 
-    
+
     const sendDonasi = async (id) => {
-        await AsyncStorage.setItem("donasiKey",id);
+        await AsyncStorage.setItem("donasiKey", id);
         props.navigation.navigate("detail-donasi");
         console.log("ID : ", id)
     }
@@ -31,6 +31,18 @@ const Donasi = (props) => {
             }
         )
     }
+
+    const wait = (timeout) => {
+        return new Promise(resolve => setTimeout(resolve, timeout))
+    }
+
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        wait(1500).then(() => setRefreshing(false))
+            , []
+    })
 
     const Semua = () => {
         return (
@@ -243,6 +255,14 @@ const Donasi = (props) => {
                 <View style={styles.header}>
                     <Text style={styles.text1}>Donasi</Text>
                 </View>
+                <View style={styles.container}>
+                    <View style={styles.search}>
+                        <TextInput placeholder='Cari donasi disini' placeholderTextColor={"#808080"} style={{ width: normalize(300), height: normalize(50) }} />
+                        <TouchableOpacity>
+                            <Icon type='font-awesome' name='search' />
+                        </TouchableOpacity>
+                    </View>
+                </View>
                 <View style={styles.filtering}>
                     <ScrollView horizontal showsHorizontalScrollIndicator={false} >
                         <View style={{ flexDirection: "row" }}>
@@ -270,15 +290,8 @@ const Donasi = (props) => {
 
                     </ScrollView>
                 </View>
-                <View style={styles.container}>
-                    <View style={styles.search}>
-                        <TextInput placeholder='Cari donasi disini' placeholderTextColor={"#808080"} style={{ width: normalize(300), height: normalize(50) }} />
-                        <TouchableOpacity>
-                            <Icon type='font-awesome' name='search' />
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                <ScrollView>
+                <View style={styles.lining}/>
+                <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
                     <View style={styles.container}>
                         {
                             active == true ? (
@@ -387,17 +400,14 @@ const styles = StyleSheet.create({
         flexDirection: "row"
     },
     lining: {
-        marginTop: normalize(10),
         height: normalize(3),
         borderWidth: 1,
         borderColor: "#808080",
-        marginBottom: normalize(10)
     },
     filtering: {
         width: '100%',
         height: normalize(60),
-        backgroundColor: "#dfdfdf",
-        paddingTop: normalize(15),
+        backgroundColor: "#fff",
         paddingLeft: normalize(20),
         paddingRight: normalize(20)
     },
@@ -405,7 +415,7 @@ const styles = StyleSheet.create({
         width: normalize(100),
         height: normalize(35),
         borderWidth: 1,
-        borderColor: "white",
+        borderColor: "grey",
         borderRadius: 20,
         paddingLeft: normalize(20),
         paddingRight: normalize(20),
@@ -415,7 +425,7 @@ const styles = StyleSheet.create({
         width: normalize(150),
         height: normalize(35),
         borderWidth: 1,
-        borderColor: "white",
+        borderColor: "grey",
         borderRadius: 20,
         paddingLeft: normalize(20),
         paddingRight: normalize(20),
@@ -426,7 +436,7 @@ const styles = StyleSheet.create({
         width: normalize(200),
         height: normalize(35),
         borderWidth: 1,
-        borderColor: "white",
+        borderColor: "grey",
         borderRadius: 20,
         paddingLeft: normalize(20),
         paddingRight: normalize(20),

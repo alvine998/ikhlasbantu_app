@@ -5,7 +5,7 @@ import { Image, RefreshControl, ScrollView, StatusBar, StyleSheet, Text, TextInp
 import { Icon } from 'react-native-elements';
 import { SliderBox } from 'react-native-image-slider-box';
 import normalize from 'react-native-normalize';
-import { bencana, jumatsedekah, kesehatan, logo, sedekah, shalat_time, alquran } from '../../assets';
+import { bencana, jumatsedekah, kesehatan, logo, sedekah, shalat_time, alquran, zakat } from '../../assets';
 
 const Home = (props) => {
 
@@ -131,6 +131,12 @@ const Home = (props) => {
                                     <Image source={alquran} style={styles.iconStyle} />
                                 </View>
                                 <Text style={styles.text4}>Baca Qur'an</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => { props.navigation.navigate("hitung-zakat") }} style={{ alignItems: "center", justifyContent: "center", marginLeft: normalize(20) }}>
+                                <View style={{ borderWidth: 1, borderRadius: 20, padding: normalize(10) }}>
+                                    <Image source={zakat} style={styles.iconStyle} />
+                                </View>
+                                <Text style={styles.text4}>Zakat</Text>
                             </TouchableOpacity>
                         </View>
 
