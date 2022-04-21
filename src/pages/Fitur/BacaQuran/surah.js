@@ -20,13 +20,13 @@ const SurahQuran = (props) => {
                         result => {
                             const surah = result.data.data;
 
-                            console.log("Null is :", bismillah, translate);
                             setSurah(surah.verses);
                             setLoading(false);
                             if (res !== 1) {
-                                const bismillah = surah.preBismillah;
+                                const bismillah = surah.preBismillah.text.arab;
                                 const translate = surah.preBismillah.translation.id;
-                                setBismillah(bismillah.text.arab);
+                                console.log("Null is :", bismillah, translate);
+                                setBismillah(bismillah);
                                 setTranslate(translate);
                             }
                         }

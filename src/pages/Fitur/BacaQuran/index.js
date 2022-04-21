@@ -10,16 +10,23 @@ const BacaQuran = (props) => {
     const [surah, setSurah] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    // const getSurah = () => {
+    //     axios.get(`../../../assests/data/surah.json`)
+    //         .then(
+    //             res => {
+    //                 const surah = res.data.data;
+    //                 console.log(surah);
+    //                 setSurah(surah);
+    //                 setLoading(false);
+    //             }
+    //         )
+    // }
+
     const getSurah = () => {
-        axios.get(`https://api-alquranid.herokuapp.com/surah/`)
-            .then(
-                res => {
-                    const surah = res.data.data;
-                    console.log(surah);
-                    setSurah(surah);
-                    setLoading(false);
-                }
-            )
+        var data = require('../../../assets/data/surah.json')
+        const surah = data.data;
+        setSurah(surah);
+        setLoading(false);
     }
 
     const getData = async (id) => {
